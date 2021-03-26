@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.cepc">
+    <permission
+        android:name="com.example.cepc.READ_PERMISSION"
+        android:label="User provider read permission"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.example.cepc.WRITE_PERMISSION"
+        android:label="User provider read permission"
+        android:protectionLevel="normal"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/tubiao1"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CEPC">
+
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/Theme.CEPC.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.CEPC.NoActionBarWithBackGround">
+        </activity>
+        <service android:name=".MyService" > </service>
+        <provider
+            android:name=".DataContentProvider"
+            android:authorities="com.example.cepc.DataContentProvider"
+            android:readPermission="com.example.cepc.READ_PERMISSION"
+            android:writePermission="com.example.cepc.WRITE_PERMISSION"
+            android:exported="true"/>
+    </application>
+
+</manifest>
