@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="83b69e62-b60d-4095-b51c-c382361e2f81" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/CEPC.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CEPC/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CEPC/app/src/main/java/com/example/cepc/ui/main/ItmFragment1.java" beforeDir="false" afterPath="$PROJECT_DIR$/CEPC/app/src/main/java/com/example/cepc/ui/main/ItmFragment1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CEPC/app/src/main/java/com/example/cepc/ui/main/ItmFragment2.java" beforeDir="false" afterPath="$PROJECT_DIR$/CEPC/app/src/main/java/com/example/cepc/ui/main/ItmFragment2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CEPC/app/src/main/java/com/example/cepc/ui/main/ListViewAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/CEPC/app/src/main/java/com/example/cepc/ui/main/ListViewAdapter.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1qIOeEtQUOgakeBlJeKCDebelet" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="83b69e62-b60d-4095-b51c-c382361e2f81" name="Default Changelist" comment="" />
+      <created>1616763730224</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1616763730224</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="459" y="109" key="FileChooserDialogImpl" timestamp="1618716468266">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state x="459" y="109" key="FileChooserDialogImpl/0.0.1280.720@0.0.1280.720" timestamp="1618716468266" />
+  </component>
+</project>

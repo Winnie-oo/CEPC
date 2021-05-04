@@ -1,24 +1,15 @@
 package com.example.cepc.ui.main;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
+
 
 import com.example.cepc.R;
-import com.example.cepc.db.DataBaseHelper;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

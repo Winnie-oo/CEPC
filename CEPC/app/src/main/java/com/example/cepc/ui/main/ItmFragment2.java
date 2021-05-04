@@ -24,7 +24,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-
 /**
  * A placeholder fragment containing a simple view.
  */

@@ -1,4 +1,5 @@
 package com.example.cepc.ui.main;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,8 +12,6 @@ import android.widget.TextView;
 import com.example.cepc.R;
 import com.example.cepc.db.DataBaseHelper;
 import com.example.cepc.model.Record;
-
-
 
 public class ListViewAdapter extends BaseAdapter {
     private final static String AUTHORITY = "com.example.cepc.DataContentProvider";
