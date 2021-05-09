@@ -1,0 +1,17 @@
+server:
+  port: 8021
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/cepcdb
+    username: postgres
+    password: muxincute
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true #打印数据
+    properties:
+      hibernate:
+        format_sql: true #换行打印
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+      hbm2ddl:
+        auto: update
