@@ -21,7 +21,7 @@
           width="120">
       </el-table-column>
       <el-table-column
-          prop="daymarks"
+          prop="dayMark"
           label="连续打卡"
           width="120">
       </el-table-column>
@@ -58,7 +58,7 @@ export default {
     },
     page(currentPage){
       const _this = this
-      axios.get('http://localhost:8021/records/findAll/'+currentPage+'/'+_this.totalSize).then(function (resp) {
+      axios.get('http://localhost:8021/users/findAll/'+currentPage+'/'+_this.totalSize).then(function (resp) {
         console.log(resp)
         _this.tableData = resp.data.content
         _this.totalElement = resp.data.totalElements
@@ -67,7 +67,7 @@ export default {
   },
   created() {
     const _this = this
-    axios.get('http://localhost:8021/records/findAll/1/'+_this.totalSize).then(function (resp){
+    axios.get('http://localhost:8021/users/findAll/1/'+_this.totalSize).then(function (resp){
       console.log(resp)
       _this.tableData = resp.data.content
       _this.totalElement = resp.data.totalElements
@@ -81,7 +81,7 @@ export default {
         id: 1,
         name: '王庆',
         password: '123',
-        daymarks: '7',
+        day_mark: '7',
         address: '武汉'
       }]
     }
