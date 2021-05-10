@@ -21,7 +21,7 @@
           width="120">
       </el-table-column>
       <el-table-column
-          prop="dayMark"
+          prop="day_mark"
           label="连续打卡"
           width="120">
       </el-table-column>
@@ -35,7 +35,7 @@
           label="操作"
           width="100">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">修改</el-button>
+          <el-button @click="edit(scope.row)" type="text" size="small">修改</el-button>
           <el-button type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
@@ -53,8 +53,10 @@
 <script>
 export default {
   methods: {
-    handleClick(row) {
-      console.log(row);
+    edit(row) {
+      // console.log(row);
+      // row.id
+      this.$router.push('/userUpdate')
     },
     page(currentPage){
       const _this = this

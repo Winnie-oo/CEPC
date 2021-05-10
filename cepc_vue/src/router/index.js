@@ -5,6 +5,7 @@ import Users from "../views/Users";
 import Records from "../views/Records";
 import AddUser from '../views/AddUser.vue'
 import AddRecord from '../views/AddRecord.vue'
+import UserUpdate from '../views/UserUpdate.vue'
 
 Vue.use(VueRouter)
 
@@ -17,12 +18,12 @@ const routes = [
     children:[
       {
         path: '/users',
-        name: 'Users',
+        name: '用户管理',
         component: Users
       },
       {
         path: '/addUser',
-        name: 'AddUser',
+        name: '添加用户',
         component: AddUser
       }
     ]
@@ -34,16 +35,19 @@ const routes = [
     children:[
       {
         path: '/records',
-        name: 'Records',
+        name: '记录管理',
         component: Records
       },
       {
         path: '/addRecord',
-        name: 'AddRecord',
+        name: '添加记录',
         component: AddRecord
       }
     ]
-
+  },
+  {
+    path:'/userUpdate',
+    component: UserUpdate
   }
 ]
 
