@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import About from '../views/About.vue'
-import Records from "../views/Records";
 import MyMenu from '../views/MyMenu.vue'
+import Users from "../views/Users";
+import Records from "../views/Records";
+import AddUser from '../views/AddUser.vue'
+import AddRecord from '../views/AddRecord.vue'
 
 Vue.use(VueRouter)
 
@@ -12,19 +13,17 @@ const routes = [
     path: '/',
     name: '社区用户',
     component: MyMenu,
+    redirect:'/records',
     children:[
       {
-        path: '/home',
-        name: 'Home',
-        component: Home
+        path: '/users',
+        name: 'Users',
+        component: Users
       },
       {
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+        path: '/add',
+        name: 'AddUser',
+        component: AddUser
       }
     ]
   },
@@ -34,9 +33,14 @@ const routes = [
     component: MyMenu,
     children:[
       {
-        path: '/Records',
-        name: 'Record',
+        path: '/records',
+        name: 'Records',
         component: Records
+      },
+      {
+        path: '/addRecord',
+        name: 'AddRecord',
+        component: AddRecord
       }
     ]
 

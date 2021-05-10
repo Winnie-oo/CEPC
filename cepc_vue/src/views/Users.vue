@@ -16,13 +16,13 @@
           width="120">
       </el-table-column>
       <el-table-column
-          prop="temperature"
-          label="体温"
+          prop="password"
+          label="密码"
           width="120">
       </el-table-column>
       <el-table-column
-          prop="date"
-          label="日期"
+          prop="daymarks"
+          label="连续打卡"
           width="120">
       </el-table-column>
       <el-table-column
@@ -76,12 +76,12 @@ export default {
   data() {
     return {
       totalElement:null,
-      totalSize:10,
+      totalSize:7,
       tableData: [{
         id: 1,
-        name: '小明',
-        temperature: '36.2',
-        date: '2021-5-1',
+        name: '王庆',
+        password: '123',
+        daymarks: '7',
         address: '武汉'
       }]
     }
