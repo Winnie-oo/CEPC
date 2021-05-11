@@ -26,6 +26,16 @@
         android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:drawableLeft="@mipmap/password"/>
+    <EditText
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="10dp"
+        android:hint="地址(只需注册时填写)"
+        android:maxLines="1"
+        android:paddingLeft="10dp"
+        android:drawableLeft="@mipmap/address"
+        android:inputType="textNoSuggestions"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

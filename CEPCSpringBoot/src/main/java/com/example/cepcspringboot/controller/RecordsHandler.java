@@ -1,6 +1,7 @@
 package com.example.cepcspringboot.controller;
 
 import com.example.cepcspringboot.entity.Records;
+import com.example.cepcspringboot.entity.Users;
 import com.example.cepcspringboot.repository.RecordsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,4 +21,15 @@ public class RecordsHandler {
         Pageable pageable = PageRequest.of(page-1,size);
         return recordsRepository.findAll(pageable);
     }
+
+    @PostMapping("/save")
+    public String save(@RequestBody Records records){
+        Records result = recordsRepository.save(records);
+        if(result!=null){
+            return "success";
+        }else{
+            return "error";
+        }
+    }
+
 }

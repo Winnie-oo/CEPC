@@ -14,16 +14,21 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.cepc.db.DataBaseHelper;
+import com.example.cepc.db.PgSqlUtil;
 import com.example.cepc.model.User;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity {
-    private final static String AUTHORITY = "com.example.cepc.DataContentProvider";
-    private final static Uri USER_URI = Uri.parse("content://" + AUTHORITY + "/"+ DataBaseHelper.USERS_TABLE_NAME);
+
+    private static final String URL = "http://10.0.2.2:8021/users";
     private Context mContext;
-    private EditText etUserName,etPassword;
+    private EditText etUserName,etPassword,etAddress;
     private Button btLogin,btApply;
 
+    private boolean password_currect = false;
+    private boolean user_currect = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
         etUserName = findViewById(R.id.username);
         etPassword = findViewById(R.id.password);
+        etAddress = findViewById(R.id.address);
         btLogin = findViewById(R.id.bt3_login);
         btApply = findViewById(R.id.bt3_apply);
 
@@ -44,13 +50,37 @@ public class LoginActivity extends AppCompatActivity {
                 String mPassword = etPassword.getText().toString();
                 if (mUserName.equals("") || mPassword.equals(""))
                     Toast.makeText(LoginActivity.this, "账号密码不能为空", Toast.LENGTH_SHORT).show();
-                else if (queryPassword(mUserName)== null)
-                    Toast.makeText(LoginActivity.this, "用户名错误 or 不存在，请先注册！", Toast.LENGTH_SHORT).show();
                 else {
-                    String pw = queryPassword(mUserName);
-                    if (!pw.equals(mPassword))
-                        Toast.makeText(LoginActivity.this, "密码错误！", Toast.LENGTH_SHORT).show();
-                    else{
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String result = PgSqlUtil.getJsonContent(URL+"/findByName/"+mUserName);
+                            try {
+                                JSONObject jsonObject = new JSONObject(result);
+                                System.out.println(jsonObject.getString("name"));
+                                System.out.println(jsonObject.getString("password"));
+                                if(jsonObject.getString("password").isEmpty())
+                                    user_currect=true;
+                                if(jsonObject.getString("password").equals(mPassword) ) {
+                                    password_currect = true;
+                                } else {
+                                    password_currect = false;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    thread.start();
+                    try {
+                        thread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    //登录事件
+                    if(user_currect) { Toast.makeText(LoginActivity.this, "用户名错误 or 不存在，请先注册！", Toast.LENGTH_SHORT).show();}
+                    if(password_currect) {
                         Toast.makeText(LoginActivity.this, "登录成功！", Toast.LENGTH_SHORT).show();
                         Bundle bundle = new Bundle();
                         bundle.putString("username", mUserName);
@@ -59,6 +89,8 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtras(bundle);
                         startActivity(intent);
                         finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "密码错误！", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -69,47 +101,35 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String mUserName = etUserName.getText().toString();
                 String mPassword = etPassword.getText().toString();
+                String mAddress = etAddress.getText().toString();
                 if (mUserName.equals("") || mPassword.equals(""))
                     Toast.makeText(LoginActivity.this, "账号密码不能为空", Toast.LENGTH_SHORT).show();
                 else {
-                    if (queryPassword(mUserName) == null)
-                        insertValue(mUserName, mPassword);
-                    else Toast.makeText(LoginActivity.this, "用户已存在", Toast.LENGTH_SHORT).show();
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String result = PgSqlUtil.getJsonContent(URL+"/findByName/"+mUserName);
+                            try {
+                                JSONObject jsonObject = new JSONObject(result);
+                                if(jsonObject.getString("name") .isEmpty()) {
+                                    user_currect = true;
+                                    PgSqlUtil.postJsonContent(URL+"/save","{name:"+mUserName+",password:"+mPassword+",address:"+mAddress+"}");
+                                }else user_currect = false;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    thread.start();
+
+                    if(user_currect) {
+                        Toast.makeText(LoginActivity.this, "申请用户成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "用户已存在", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
     }
-
-    private void insertValue(String name,String password) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("username",name);
-        contentValues.put("password",password);
-        contentValues.put("daymarks",0);
-        //通过getContentResolver()得到对象，调用其insert
-        mContext.getContentResolver().insert(USER_URI,contentValues);
-        Toast.makeText(LoginActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-    }
-
-    private String queryPassword(String name) {
-        //通过getContentResolver()得到对象，调用其query，得到Cursor
-        Cursor cursor = getContentResolver().query(USER_URI, new String[]{"*"},
-                "username=?",new String[]{ name },null);
-        String password = null;
-        if(cursor != null){
-            if (cursor.moveToFirst()) {
-                User user = new User(
-                        cursor.getInt(cursor.getColumnIndex("user_id")),
-                        cursor.getString(cursor.getColumnIndex("username")),
-                        cursor.getString(cursor.getColumnIndex("password")),
-                        cursor.getInt(cursor.getColumnIndex("daymarks")));
-                password = user.getPassword();
-            }
-        }
-        return password;
-    }
-
-//    private void deleteValue() {
-//        getContentResolver().delete(USER_URI,"name = ?",new String[]{"update"});
-//    }
 
 }

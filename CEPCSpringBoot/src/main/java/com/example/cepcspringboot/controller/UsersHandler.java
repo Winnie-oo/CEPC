@@ -54,4 +54,9 @@ public class UsersHandler {
     public void delete(@PathVariable("id") Integer id){
         usersRepository.deleteById(id);
     }
+
+    @GetMapping("/findByName/{name}")
+    public Users findByName(@PathVariable("name") String name){
+        return usersRepository.findByNameLike(name);
+    }
 }

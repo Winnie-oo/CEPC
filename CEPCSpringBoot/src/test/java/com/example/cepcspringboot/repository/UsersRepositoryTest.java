@@ -42,4 +42,8 @@ public class UsersRepositoryTest {
     void delete(){
         usersRepository.deleteById(2);
     }
+    @Test
+    void findByName(){
+        System.out.println(usersRepository.findByNameLike("王庆"));
+    }
 }

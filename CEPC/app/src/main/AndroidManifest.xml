@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/tubiao1"
         android:label="@string/app_name"
@@ -36,12 +37,12 @@
             android:theme="@style/Theme.CEPC.NoActionBarWithBackGround">
         </activity>
         <service android:name=".MyService" > </service>
-        <provider
-            android:name=".DataContentProvider"
-            android:authorities="com.example.cepc.DataContentProvider"
-            android:readPermission="com.example.cepc.READ_PERMISSION"
-            android:writePermission="com.example.cepc.WRITE_PERMISSION"
-            android:exported="true"/>
+<!--        <provider-->
+<!--            android:name=".DataContentProvider"-->
+<!--            android:authorities="com.example.cepc.DataContentProvider"-->
+<!--            android:readPermission="com.example.cepc.READ_PERMISSION"-->
+<!--            android:writePermission="com.example.cepc.WRITE_PERMISSION"-->
+<!--            android:exported="true"/>-->
     </application>
 
 </manifest>
