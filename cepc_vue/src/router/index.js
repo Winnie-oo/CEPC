@@ -14,6 +14,7 @@ const routes = [
     path: '/',
     name: '社区用户',
     component: MyMenu,
+    show:true,
     redirect:'/records',
     children:[
       {
@@ -32,6 +33,7 @@ const routes = [
     path: '/',
     name:"健康打卡",
     component: MyMenu,
+    show:true,
     children:[
       {
         path: '/records',
@@ -46,8 +48,16 @@ const routes = [
     ]
   },
   {
-    path:'/userUpdate',
-    component: UserUpdate
+    path: '/',
+    name: "修改用户信息",
+    component: MyMenu,
+    show:false,
+    children: [
+        {
+          path: '/userUpdate',
+          component: UserUpdate
+        }
+    ]
   }
 ]
 

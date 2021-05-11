@@ -25,4 +25,21 @@ public class UsersRepositoryTest {
         Users users1 =usersRepository.save(users);
         System.out.println(users1);
     }
+
+    @Test
+    void findById(){
+        Users users = usersRepository.findById(1).get();
+    }
+
+    @Test
+    void upDate(){
+        Users users = usersRepository.findById(5).get();
+        users.setName("何晓");
+        Users users1 = usersRepository.save(users);
+        System.out.println(users1);
+    }
+    @Test
+    void delete(){
+        usersRepository.deleteById(2);
+    }
 }

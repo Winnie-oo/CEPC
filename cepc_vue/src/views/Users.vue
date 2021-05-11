@@ -36,7 +36,7 @@
           width="100">
         <template slot-scope="scope">
           <el-button @click="edit(scope.row)" type="text" size="small">修改</el-button>
-          <el-button type="text" size="small">删除</el-button>
+          <el-button @click="deleteUser(scope.row)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -53,10 +53,24 @@
 <script>
 export default {
   methods: {
+    deleteUser(row){
+      const _this = this
+      axios.delete('http://localhost:8021/users/deleteById/'+row.id).then(function (resp) {
+        _this.$alert(row.name+'删除成功', '消息', {
+          confirmButtonText: '确定',
+          callback: action => {
+            window.location.reload()
+          }
+        });
+      })
+    },
     edit(row) {
-      // console.log(row);
-      // row.id
-      this.$router.push('/userUpdate')
+      this.$router.push({
+        path:'/userUpdate',
+        query:{
+          id:row.id
+        }
+      })
     },
     page(currentPage){
       const _this = this

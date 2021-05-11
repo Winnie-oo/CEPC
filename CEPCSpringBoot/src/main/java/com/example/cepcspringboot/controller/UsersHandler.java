@@ -29,4 +29,29 @@ public class UsersHandler {
             return "error";
         }
     }
+
+    @GetMapping("/findById/{id}")
+    public Users findById(@PathVariable("id") Integer id){
+        return usersRepository.findById(id).get();
+    }
+
+    @PutMapping("/upDate")
+    public String upDate(@RequestBody Users users){
+        System.out.println(users);
+        Users users1 = usersRepository.findById(users.getId()).get();
+        users1.setName(users.getName());
+        users1.setAddress(users.getAddress());
+        users1.setPassword(users.getPassword());
+        Users result = usersRepository.save(users1);
+        if(result!=null){
+            return "success";
+        }else{
+            return "error";
+        }
+    }
+
+    @DeleteMapping("/deleteById/{id}")
+    public void delete(@PathVariable("id") Integer id){
+        usersRepository.deleteById(id);
+    }
 }
