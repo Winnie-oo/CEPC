@@ -24,7 +24,6 @@ public class RecordsHandler {
 
     @GetMapping("/findByName/{name}")
     public List<Records> findAll(@PathVariable("name") String name){
-        JSONArray jsonArray = JSONArray.fromObject(ListData);
         return recordsRepository.findByNameLike(name);
     }
 
