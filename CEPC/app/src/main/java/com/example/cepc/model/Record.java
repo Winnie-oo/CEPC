@@ -4,12 +4,12 @@ public class Record {
 
     private int record_id;
     private String user_name;
-    private String temperature;
+    private double temperature;
     private String patient;
     private String date;
     private String address;
 
-    public Record(int record_id,String user_name, String temperature, String patient, String date,String address) {
+    public Record(int record_id,String user_name, double temperature, String patient, String date,String address) {
         this.record_id = record_id;
         this.user_name = user_name;
         this.temperature = temperature;
@@ -40,11 +40,11 @@ public class Record {
         this.date = date;
     }
 
-    public String getTemperature() {
+    public double getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(String temperature) {
+    public void setTemperature(double temperature) {
         this.temperature = temperature;
     }
 
@@ -69,7 +69,7 @@ public class Record {
         return "Record{" +
                 "id=" + record_id +
                 ", name='" + user_name + '\'' +
-                ", temperature='" + temperature + '\'' +
+                ", temperature=" + temperature +
                 ", patient='" + patient + '\'' +
                 ", date='" + date +
                 ", address='" + date +

@@ -22,7 +22,8 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String URL = "http://10.0.2.2:8021/users";
+    private static final String IP="192.168.43.74";
+    private static final String URL = "http://"+IP+":8021/users";
     private Context mContext;
     private EditText etUserName,etPassword,etAddress;
     private Button btLogin,btApply;

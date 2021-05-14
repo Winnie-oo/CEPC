@@ -17,28 +17,30 @@ import androidx.fragment.app.Fragment;
 
 
 import com.example.cepc.R;
-import com.example.cepc.db.DataBaseHelper;
+import com.example.cepc.db.PgSqlUtil;
 import com.example.cepc.model.User;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * A placeholder fragment containing a simple view.
  */
 public class ItmFragment2 extends Fragment {
 
-    private final static String AUTHORITY = "com.example.cepc.DataContentProvider";
-    private final static Uri USER_URI = Uri.parse("content://" + AUTHORITY + "/"+ DataBaseHelper.USERS_TABLE_NAME);
-    private final static Uri RECORD_URI = Uri.parse("content://" + AUTHORITY + "/"+DataBaseHelper.RECORDS_TABLE_NAME);
+    private static final String IP="192.168.43.74";
+    private static final String USER_URI = "http://"+IP+":8021/users";
+    private final static String RECORD_URI = "http://"+IP+":8021/records/";
     private Context mContext;
 
     private String name_2;
-    private int daymark_2;
+    private int daymark_2,rank;//rank: 0为危险，1为限制，2为安全
     private ImageView imQR_code;
     private Button mUpdate_2;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,39 +117,69 @@ public class ItmFragment2 extends Fragment {
 
 
     private int queryUserValue(String name) {
-        Cursor cursor = mContext.getContentResolver().query(USER_URI, new String[]{"*"},"username =?",new String[]{ name },null);
-        int daymark =0;
-        if (cursor.moveToFirst()) {
-            User user = new User(
-                    cursor.getInt(cursor.getColumnIndex("user_id")),
-                    cursor.getString(cursor.getColumnIndex("username")),
-                    cursor.getString(cursor.getColumnIndex("password")),
-                    cursor.getInt(cursor.getColumnIndex("daymarks")));
-            daymark = user.getDaymarks();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String result = PgSqlUtil.getJsonContent(USER_URI+"/findByName/"+name);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    System.out.println(jsonObject.getInt("day_mark"));
+                    daymark_2 = jsonObject.getInt("day_mark");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        cursor.close();
-        return daymark;
+        return daymark_2;
     }
+
     private int queryRecordValue(String name) {
-        int m = 0;//0为危险，1为限制，2为安全
-        Cursor cursor = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},
-                "user_name =? and temperature > ?",new String[]{ name,"37.4"},null);
-        if (cursor.getCount()==0) {
-            //判断有无发烧，无发烧则+1
-            cursor.close();
-            m=m+1;
-            //所有记录和patient=“否”的记录作比较，一样则不属于四类人员，不一样则属于四类人员
-            cursor= mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},
-                    "user_name=? and patient=?",new String[]{ name , "否" },null);
-            int a = cursor.getCount();
-            cursor.close();
-            cursor = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},
-                    "user_name=?",new String[]{ name },null);
-            int b =cursor.getCount();
-            if (a==b) {m=m+1;}
-            else {m=0;}
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String result = PgSqlUtil.getJsonContent(RECORD_URI+"/judgeRank/"+name);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    System.out.println(result);
+                    System.out.println(jsonObject.getInt("date"));
+                    rank=Integer.valueOf(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        cursor.close();
+
+//        Cursor cursor = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},
+//                "user_name =? and temperature > ?",new String[]{ name,"37.4"},null);
+//        if (cursor.getCount()==0) {
+//            //判断有无发烧，无发烧则+1
+//            cursor.close();
+//            m=m+1;
+//            //所有记录和patient=“否”的记录作比较，一样则不属于四类人员，不一样则属于四类人员
+//            cursor= mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},
+//                    "user_name=? and patient=?",new String[]{ name , "否" },null);
+//            int a = cursor.getCount();
+//            cursor.close();
+//            cursor = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},
+//                    "user_name=?",new String[]{ name },null);
+//            int b =cursor.getCount();
+//            if (a==b) {m=m+1;}
+//            else {m=0;}
+//        }
+//        cursor.close();
 //        Cursor cursor1 = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},"user_name =? and temperature > ?",new String[]{ name,"37.4"},null);
 //        if (cursor1.getCount()==0) {
 //            cursor1.close();
@@ -162,6 +194,6 @@ public class ItmFragment2 extends Fragment {
 //            cursor3.close();
 //        }
 //        cursor1.close();
-        return m;
+        return rank;
     }
 }

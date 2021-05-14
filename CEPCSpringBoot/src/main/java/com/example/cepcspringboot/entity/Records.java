@@ -12,7 +12,8 @@ public class Records {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private String temperature;
+    private double temperature;
     private String date;
     private String address;
+    private String patient;
 }

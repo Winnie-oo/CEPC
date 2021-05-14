@@ -59,4 +59,5 @@ public class UsersHandler {
     public Users findByName(@PathVariable("name") String name){
         return usersRepository.findByNameLike(name);
     }
+
 }

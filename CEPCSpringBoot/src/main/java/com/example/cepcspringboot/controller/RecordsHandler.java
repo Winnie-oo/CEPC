@@ -1,13 +1,13 @@
 package com.example.cepcspringboot.controller;
 
 import com.example.cepcspringboot.entity.Records;
-import com.example.cepcspringboot.entity.Users;
 import com.example.cepcspringboot.repository.RecordsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -22,6 +22,12 @@ public class RecordsHandler {
         return recordsRepository.findAll(pageable);
     }
 
+    @GetMapping("/findByName/{name}")
+    public List<Records> findAll(@PathVariable("name") String name){
+        JSONArray jsonArray = JSONArray.fromObject(ListData);
+        return recordsRepository.findByNameLike(name);
+    }
+
     @PostMapping("/save")
     public String save(@RequestBody Records records){
         Records result = recordsRepository.save(records);
@@ -30,6 +36,28 @@ public class RecordsHandler {
         }else{
             return "error";
         }
+    }
+
+    @GetMapping("/findByNameAndDate/{name}/{date}")
+    public Records findByNameAndDate(@PathVariable("name") String name,@PathVariable("date") String date){
+        return recordsRepository.findByNameAndDateLike(name,date);
+    }
+
+    @GetMapping("/judgeRank/{name}")
+    public Integer judgeRank(@PathVariable("name") String name){
+        List<Records> list = recordsRepository.findTop14ByNameLikeOrderByIdDesc(name);
+        Integer rank =0;//等级
+        for (Records records : list) {
+            double d = records.getTemperature();
+            if(d >37.3){
+                rank+=1;
+                System.out.println(rank);
+            }
+            if(records.getPatient().equals("是")){
+                rank+=1;
+            }
+        }
+        return rank;
     }
 
 }

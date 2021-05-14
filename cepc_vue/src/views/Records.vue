@@ -21,6 +21,11 @@
           width="120">
       </el-table-column>
       <el-table-column
+          prop="patient"
+          label="是否为四类人员"
+          width="120">
+      </el-table-column>
+      <el-table-column
           prop="date"
           label="日期"
           width="120">
@@ -80,9 +85,10 @@ export default {
       tableData: [{
         id: 1,
         name: '小明',
-        temperature: '36.2',
+        temperature: 36.2,
         date: '2021-5-1',
-        address: '武汉'
+        address: '武汉',
+        patient: '否'
       }]
     }
   }

@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@mipmap/tubiao2"
             android:text="36.5℃"
-            android:textSize="45sp"/>
+            android:textSize="25sp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -27,7 +27,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="是否四类患者："
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:gravity="right"/>
             <TextView
                 android:id="@+id/item_date"
@@ -35,7 +35,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="2020年5月10号"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:gravity="right"/>
         </LinearLayout>
 
@@ -45,6 +45,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="地点："
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:paddingLeft="15dp"/>
 </LinearLayout>

@@ -19,6 +19,7 @@
             android:paddingLeft="5dp"
             android:drawableLeft="@mipmap/cuy"
             android:text="每连续填报七日，即可免费领取一个一次性医用口罩"
+            android:textSize="12sp"
             android:gravity="center_vertical"
             android:background="#ffffcc"/>
         <LinearLayout
@@ -37,11 +38,11 @@
             <Button
                 android:id="@+id/bt1_address"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/edit_background"
-                android:textSize="18sp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
+                android:textSize="10sp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:maxLines="1"
                 android:hint="点击获取" />
         </LinearLayout>

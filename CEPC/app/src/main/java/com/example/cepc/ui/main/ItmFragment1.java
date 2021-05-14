@@ -25,8 +25,11 @@ import androidx.fragment.app.Fragment;
 
 import com.example.cepc.MyService;
 import com.example.cepc.R;
-import com.example.cepc.db.DataBaseHelper;
+import com.example.cepc.db.PgSqlUtil;
 import com.example.cepc.model.Record;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,9 +40,9 @@ import java.util.Date;
  */
 public class ItmFragment1 extends Fragment {
 
-    private final static String AUTHORITY = "com.example.cepc.DataContentProvider";
-    private final static Uri USER_URI = Uri.parse("content://" + AUTHORITY + "/"+DataBaseHelper.USERS_TABLE_NAME);
-    private final static Uri RECORD_URI = Uri.parse("content://" + AUTHORITY + "/"+DataBaseHelper.RECORDS_TABLE_NAME);
+    private static final String IP="192.168.43.74";
+    private static final String USER_URI = "http://"+IP+":8021/users";
+    private final static String RECORD_URI = "http://"+IP+":8021/records/";
     private Context mContext;
 
     private ArrayList<String> arrayList = new ArrayList<>();
@@ -56,6 +59,7 @@ public class ItmFragment1 extends Fragment {
     private String date_1;
     private String address_1 ;
 
+    private boolean record_currect = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); mContext=this.getContext();}
@@ -81,10 +85,32 @@ public class ItmFragment1 extends Fragment {
         Date date = new Date(System.currentTimeMillis());
         tvDate.setText(simpleDateFormat.format(date));
         date_1 = simpleDateFormat.format(date);
-        updateDaymark(name_1);
-
-        Cursor cursor = queryValue(name_1,date_1);
-        if(cursor.getCount()!=0) {
+        //查看今天是否填报
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String result = PgSqlUtil.getJsonContent(RECORD_URI+"/findByNameAndDate/"+name_1+"/"+date_1);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    System.out.println(jsonObject.getString("name"));
+                    System.out.println(jsonObject.getString("password"));
+                    if(jsonObject.getString("date").isEmpty())
+                        record_currect=false;
+                    else {
+                        record_currect=true;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if( record_currect) {
             btSubmit.setText("今日已填报");
             btSubmit.setBackgroundColor(Color.parseColor("#777777"));
             btSubmit.setTextColor(Color.parseColor("#F7F7F7"));
@@ -109,15 +135,6 @@ public class ItmFragment1 extends Fragment {
                 getActivity().startService(startIntent); // 开始启动服务
                 //注册广播接收器
                 initBroadcastReceiver();
-//                deleteValue();
-//                insertValue(name_1,"36.7","否","2020-05-09",address_1);
-//                insertValue(name_1,"36.5","否","2020-05-10",address_1);
-//                insertValue(name_1,"36.6","否","2020-05-11",address_1);
-//                insertValue(name_1,"36.5","否","2020-05-12",address_1);
-//                insertValue(name_1,"36.6","否","2020-05-13",address_1);
-//                insertValue(name_1,"36.5","否","2020-05-14",address_1);
-//                insertValue(name_1,"36.6","否","2020-05-15",address_1);
-//                insertValue(name_1,"36.5","否","2020-05-16",address_1);
             }
         });
 
@@ -126,7 +143,19 @@ public class ItmFragment1 extends Fragment {
             public void onClick(View v) {
                 temperature_1 = etTemperature.getText().toString();
                 address_1 = btAddr.getText().toString();
-                insertValue(name_1,temperature_1,patient_1,date_1,address_1);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        PgSqlUtil.postJsonContent(RECORD_URI+"/save",
+                                "{name:"+name_1+
+                                ",temperature:"+temperature_1+
+                                ",patient:"+patient_1+
+                                ",date:"+date_1+
+                                ",address:"+address_1+"}");
+                    }
+                });
+                thread.start();
+
                 btSubmit.setText("今日已填报");
                 btSubmit.setBackgroundColor(Color.parseColor("#777777"));
                 btSubmit.setTextColor(Color.parseColor("#F7F7F7"));
@@ -159,60 +188,49 @@ public class ItmFragment1 extends Fragment {
         getActivity().registerReceiver(broadcastReceiver,filter);
     }
 
-    private void insertValue(String name,String temperature,String patient,String date,String address) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("user_name",name);
-        contentValues.put("temperature",temperature);
-        contentValues.put("patient",patient);
-        contentValues.put("date",date);
-        contentValues.put("address",address);
-        mContext.getContentResolver().insert(RECORD_URI,contentValues);
-        updateDaymark(name_1);
-        Toast.makeText(mContext, "填报成功", Toast.LENGTH_SHORT).show();
-    }
 
-    private Cursor queryValue(String name,String date) {
-        Cursor cursor = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},"user_name =? and date=?",new String[]{ name,date },null);
-        return cursor;
-    }
-
-    private void updateDaymark(String updateName){
-        Cursor cursor = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},"user_name=?",new String[]{ updateName },null);
-        int mcount=0;
-        if (cursor.getCount()!= 0) {
-            if (cursor.moveToLast()) {
-                do{
-                    Record record = new Record(
-                            cursor.getInt(cursor.getColumnIndex("record_id")),
-                            cursor.getString(cursor.getColumnIndex("user_name")),
-                            cursor.getString(cursor.getColumnIndex("temperature")),
-                            cursor.getString(cursor.getColumnIndex("patient")),
-                            cursor.getString(cursor.getColumnIndex("date")),
-                            cursor.getString(cursor.getColumnIndex("address")));
-                    arrayList.add(record.getDate());
-                }while (cursor.moveToPrevious());
-            }
-            mcount=1;
-            for(int i =1;i<arrayList.size();i++){
-                String s1 = arrayList.get(i-1);
-                String s2 = arrayList.get(i);
-                int m = getValue(s2.substring(5,7));
-                if(Integer.valueOf(s1.substring(5,7)) == Integer.valueOf(s2.substring(5,7))){
-                    //判断日期是不是连续的
-                    if(Integer.valueOf(s1.substring(8,10)) == Integer.valueOf(s2.substring(8,10))+1){
-                        mcount=mcount+1;
-                    }else break;
-                } else if(Integer.valueOf(s1.substring(8,10))+m == Integer.valueOf(s2.substring(8,10))){
-                    mcount=mcount+1;
-                }else break;
-            }
-        }
-        arrayList.clear();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("daymarks",Integer.toString(mcount));
-        getActivity().getContentResolver().update(USER_URI,contentValues,"username = ?",new String[] {updateName});
-        cursor.close();
-    }
+//    private Cursor queryValue(String name,String date) {
+//        Cursor cursor = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},"user_name =? and date=?",new String[]{ name,date },null);
+//        return cursor;
+//    }
+//
+//    private void updateDaymark(String updateName){
+//        Cursor cursor = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},"user_name=?",new String[]{ updateName },null);
+//        int mcount=0;
+//        if (cursor.getCount()!= 0) {
+//            if (cursor.moveToLast()) {
+//                do{
+//                    Record record = new Record(
+//                            cursor.getInt(cursor.getColumnIndex("record_id")),
+//                            cursor.getString(cursor.getColumnIndex("user_name")),
+//                            cursor.getString(cursor.getColumnIndex("temperature")),
+//                            cursor.getString(cursor.getColumnIndex("patient")),
+//                            cursor.getString(cursor.getColumnIndex("date")),
+//                            cursor.getString(cursor.getColumnIndex("address")));
+//                    arrayList.add(record.getDate());
+//                }while (cursor.moveToPrevious());
+//            }
+//            mcount=1;
+//            for(int i =1;i<arrayList.size();i++){
+//                String s1 = arrayList.get(i-1);
+//                String s2 = arrayList.get(i);
+//                int m = getValue(s2.substring(5,7));
+//                if(Integer.valueOf(s1.substring(5,7)) == Integer.valueOf(s2.substring(5,7))){
+//                    //判断日期是不是连续的
+//                    if(Integer.valueOf(s1.substring(8,10)) == Integer.valueOf(s2.substring(8,10))+1){
+//                        mcount=mcount+1;
+//                    }else break;
+//                } else if(Integer.valueOf(s1.substring(8,10))+m == Integer.valueOf(s2.substring(8,10))){
+//                    mcount=mcount+1;
+//                }else break;
+//            }
+//        }
+//        arrayList.clear();
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put("daymarks",Integer.toString(mcount));
+//        getActivity().getContentResolver().update(USER_URI,contentValues,"username = ?",new String[] {updateName});
+//        cursor.close();
+//    }
 
     private int getValue(String s){
         //获取月和月之间的差值，暂时忽略了润年之分
@@ -233,10 +251,4 @@ public class ItmFragment1 extends Fragment {
         }
         return m;
     }
-
-
-    private void deleteValue() {
-        getActivity().getContentResolver().delete(RECORD_URI,"user_name = ?",new String[]{name_1});
-    }
-
 }

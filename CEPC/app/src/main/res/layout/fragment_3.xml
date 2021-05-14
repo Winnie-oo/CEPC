@@ -11,43 +11,44 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="#ffffcc" >
-        <ImageView
-            android:background="@mipmap/tubiao1"
+        <TextView
+            android:id="@+id/person_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="balala"
+            android:paddingRight="20dp"
+            android:paddingLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="30sp"
+            android:textColor="#000"/>
+        <TextView
+            android:id="@+id/person_daymark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="打卡7天"
+            android:drawableLeft="@mipmap/chh"
+            android:gravity="right"
+            android:textSize="15sp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/person_name"
-                android:layout_width="match_parent"
+            android:gravity="right"
+            android:paddingRight="5dp">
+            <Button
+                android:id="@+id/exit_3"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:text="balala"
-                android:gravity="right"
-                android:paddingRight="20dp"
-                android:textSize="60sp"
-                android:textColor="#000"/>
-            <TextView
-                android:id="@+id/person_daymark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="打卡7天"
-                android:drawableRight="@mipmap/chh"
-                android:gravity="right"
-                android:textSize="30sp" />
+                android:text="退出"
+                android:textSize="18sp" />
         </LinearLayout>
+
+
     </LinearLayout>
-    <Button
-        android:id="@+id/exit_3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="退出账号"
-        android:textSize="20sp"/>
+
     <ListView
         android:id="@+id/person_lv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffcccc" />
+        android:background="#ffcccc"
+        android:padding="5dp"/>
 </LinearLayout>

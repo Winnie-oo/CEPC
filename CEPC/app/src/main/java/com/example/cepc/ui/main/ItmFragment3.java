@@ -22,17 +22,22 @@ import androidx.fragment.app.Fragment;
 import com.example.cepc.LoginActivity;
 import com.example.cepc.MyService;
 import com.example.cepc.R;
-import com.example.cepc.db.DataBaseHelper;
+import com.example.cepc.db.PgSqlUtil;
 import com.example.cepc.model.User;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.InputStream;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class ItmFragment3 extends Fragment {
 
-    private final static String AUTHORITY = "com.example.cepc.DataContentProvider";
-    private final static Uri USER_URI = Uri.parse("content://" + AUTHORITY + "/"+DataBaseHelper.USERS_TABLE_NAME);
-    private final static Uri RECORD_URI = Uri.parse("content://" + AUTHORITY + "/"+DataBaseHelper.RECORDS_TABLE_NAME);
+    private static final String IP="192.168.43.74";
+    private static final String USER_URI = "http://"+IP+":8021/users";
+    private final static String RECORD_URI = "http://"+IP+":8021/records/";
     private Context mContext;
 
     static final String action = "ha";
@@ -58,17 +63,14 @@ public class ItmFragment3 extends Fragment {
 
         name_3 = getActivity().getIntent().getExtras().getString("username");
         tv3_name.setText(name_3);
-        daymark_3 = queryDaymark(name_3);
-        tv3_daymark.setText("连续打卡" + daymark_3 + "天");
+        SetDaymark(name_3);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Cursor cursor = queryValue(name_3);
-        if(cursor!=null)
-            listView.setAdapter(new ListViewAdapter(ItmFragment3.this.getContext(),name_3));
+        listView.setAdapter(new ListViewAdapter(ItmFragment3.this.getContext(),name_3));
         mbt_exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,24 +83,28 @@ public class ItmFragment3 extends Fragment {
         });
     }
 
-    private int queryDaymark(String name) {
-        Cursor cursor = mContext.getContentResolver().query(USER_URI, new String[]{"user_id", "username","password","daymarks"},"username=?",new String[]{ name },null);
-        int mcount = 0;
-        if (cursor.moveToFirst()) {
-            User user = new User(
-                    cursor.getInt(cursor.getColumnIndex("user_id")),
-                    cursor.getString(cursor.getColumnIndex("username")),
-                    cursor.getString(cursor.getColumnIndex("password")),
-                    cursor.getInt(cursor.getColumnIndex("daymarks")));
-            mcount = user.getDaymarks();
+    private void SetDaymark(String name) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String result = PgSqlUtil.getJsonContent(USER_URI+"/findByName/"+name);
+                try {
+                    InputStream inputStream;
+                    JSONObject jsonObject = new JSONObject(result);
+                    System.out.println(jsonObject.getInt("day_mark"));
+                    daymark_3 = jsonObject.getInt("day_mark");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        cursor.close();
-        return mcount;
-    }
-
-    private Cursor queryValue(String name) {
-        Cursor cursor = mContext.getContentResolver().query(RECORD_URI, new String[] {"*"},"user_name =?",new String[]{ name },null);
-        return cursor;
+        tv3_daymark.setText("连续打卡" + daymark_3 + "天");
     }
 
     private void initBroadcastReceiver(){
@@ -109,8 +115,7 @@ public class ItmFragment3 extends Fragment {
                 adapter = (ListViewAdapter) listView.getAdapter();
                 if (intent.getAction().equals(action)) {
                     ItmFragment3.this.adapter.notifyDataSetChanged();
-                    daymark_3 = queryDaymark(name_3);
-                    tv3_daymark.setText("连续打卡" + daymark_3 + "天");
+                    SetDaymark(name_3);
                 }
             }
         };

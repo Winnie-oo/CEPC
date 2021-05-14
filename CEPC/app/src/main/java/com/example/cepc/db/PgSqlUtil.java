@@ -2,10 +2,12 @@ package com.example.cepc.db;
 
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -18,9 +20,6 @@ public class PgSqlUtil {
     public PgSqlUtil() {
     }
 
-    public final static String USERS_TABLE_NAME = "users";
-    public final static String RECORDS_TABLE_NAME = "records";
-
     public static String getJsonContent(String url_path) {
         try{
             URL url = new URL(url_path);
@@ -28,10 +27,16 @@ public class PgSqlUtil {
             connection.setConnectTimeout(3000);
             connection.setRequestMethod("GET");
             connection.setDoInput(true);
-            int code = connection.getResponseCode();
-            if(code == 200){
+            int response = connection.getResponseCode();
+            //System.out.println("PgUtil中数据："+connection);
+            if (response== HttpURLConnection.HTTP_OK)
+            {
                 return changeInputStream(connection.getInputStream());
+            }else {
+                System.out.println(response);
+                return "not exsits";
             }
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -74,21 +79,31 @@ public class PgSqlUtil {
 
     }
 
-    private static String changeInputStream(InputStream inputStream) {
-        String jsonString = "";
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        int len = 0;
-        byte[] data = new byte[1024];
-        try{
-            while ((len = inputStream.read(data)) != -1) {
-                outputStream.write(data, 0, len);
+    private static String changeInputStream(InputStream inputStream) throws IOException {
+            BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+            String line = null;
+            StringBuffer sb = new StringBuffer();
+            while ((line = in.readLine()) != null) {
+                sb.append(line);
             }
-            jsonString = new String(outputStream.toByteArray());
-            return jsonString;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
+            //System.out.println("Stream中数据："+sb.toString());
+            return sb.toString();
+
+
+//        String jsonString = "";
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//        int len = 0;
+//        byte[] data = new byte[1024];
+//        try{
+//            while ((len = inputStream.read(data)) != -1) {
+//                outputStream.write(data, 0, len);
+//            }
+//            jsonString = new String(outputStream.toByteArray());
+//            return jsonString;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return "";
     }
 
 

@@ -10,15 +10,25 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.cepc.R;
-import com.example.cepc.db.DataBaseHelper;
+import com.example.cepc.db.PgSqlUtil;
 import com.example.cepc.model.Record;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class ListViewAdapter extends BaseAdapter {
-    private final static String AUTHORITY = "com.example.cepc.DataContentProvider";
-    private final static Uri RECORD_URI = Uri.parse("content://" + AUTHORITY + "/"+DataBaseHelper.RECORDS_TABLE_NAME);
+    private static final String IP="192.168.43.74";
+    private final static String RECORD_URI = "http://"+IP+":8021/records/";
     private Context mContext;
 
     private String mName;
+    private double mTemperature;
+    private String mPatient;
+    private String mAddress;
+    private String mDate;
+    private int mCount;
+
     private LayoutInflater mLayoutInflater;
 
     public ListViewAdapter(Context context,String name){
@@ -29,11 +39,25 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        Cursor cursor = queryValue(mName);
-        if (cursor.getCount()>14)
-            return 14;
-        else
-            return cursor.getCount();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String result = PgSqlUtil.getJsonContent(RECORD_URI+"/findByName/"+mName);
+                try {
+                    JSONArray jsonArray = new JSONArray(result);
+                    mCount = jsonArray.length();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return mCount;
     }
 
     @Override
@@ -65,30 +89,57 @@ public class ListViewAdapter extends BaseAdapter {
             holder.tv3_address = (TextView)convertView.findViewById(R.id.item_address);
             convertView.setTag(holder);
         }else { holder = (ViewHolder) convertView.getTag(); }
-        Cursor cursor = queryValue(mName);
-        if (cursor!= null) {
-            if (cursor.moveToPosition(cursor.getCount()-position-1)) {
-                    Record record = new Record(
-                            cursor.getInt(cursor.getColumnIndex("record_id")),
-                            cursor.getString(cursor.getColumnIndex("user_name")),
-                            cursor.getString(cursor.getColumnIndex("temperature")),
-                            cursor.getString(cursor.getColumnIndex("patient")),
-                            cursor.getString(cursor.getColumnIndex("date")),
-                            cursor.getString(cursor.getColumnIndex("address")));
-                    holder.tv3_temperature.setText(record.getTemperature()+"℃");
-                    holder.tv3_patient.setText("是否为四类患者："+record.getPatient());
-                    holder.tv3_date.setText("日期："+record.getDate());
-                    holder.tv3_address.setText("地点(经纬度)："+record.getAddress());
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String result = PgSqlUtil.getJsonContent(RECORD_URI+"/findByName/"+mName);
+                try {
+                    JSONArray jsonArray = new JSONArray(result);
+                    JSONObject jsonObject = jsonArray.getJSONObject(position);
+                    System.out.println("Adapter中数据："+jsonObject);
+                    mAddress=jsonObject.getString("address");
+                    mDate=jsonObject.getString("date");
+                    mPatient=jsonObject.getString("patient");
+                    mTemperature=jsonObject.getDouble("temperature");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-            cursor.close();
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        holder.tv3_temperature.setText(mTemperature+"℃");
+        holder.tv3_patient.setText("是否为四类患者："+mPatient);
+        holder.tv3_date.setText("日期："+mDate);
+        holder.tv3_address.setText("地点(经纬度)："+mAddress);
+//        Cursor cursor = queryValue(mName);
+//        if (cursor!= null) {
+//            if (cursor.moveToPosition(cursor.getCount()-position-1)) {
+//                    Record record = new Record(
+//                            cursor.getInt(cursor.getColumnIndex("record_id")),
+//                            cursor.getString(cursor.getColumnIndex("user_name")),
+//                            cursor.getDouble(cursor.getColumnIndex("temperature")),
+//                            cursor.getString(cursor.getColumnIndex("patient")),
+//                            cursor.getString(cursor.getColumnIndex("date")),
+//                            cursor.getString(cursor.getColumnIndex("address")));
+//                    holder.tv3_temperature.setText(record.getTemperature()+"℃");
+//                    holder.tv3_patient.setText("是否为四类患者："+record.getPatient());
+//                    holder.tv3_date.setText("日期："+record.getDate());
+//                    holder.tv3_address.setText("地点(经纬度)："+record.getAddress());
+//            }
+//            cursor.close();
+//        }
         return convertView;
     }
 
-    private Cursor queryValue(String name) {
-        Cursor cursor = mContext.getContentResolver().query(RECORD_URI, new String[] {"*"},"user_name =?",new String[]{ name },null);
-        return cursor;
-    }
+//    private Cursor queryValue(String name) {
+//        Cursor cursor = mContext.getContentResolver().query(RECORD_URI, new String[] {"*"},"user_name =?",new String[]{ name },null);
+//        return cursor;
+//    }
 
 }
 
