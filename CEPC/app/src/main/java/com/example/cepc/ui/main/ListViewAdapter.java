@@ -1,17 +1,13 @@
 package com.example.cepc.ui.main;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.example.cepc.R;
 import com.example.cepc.db.PgSqlUtil;
-import com.example.cepc.model.Record;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -96,7 +92,6 @@ public class ListViewAdapter extends BaseAdapter {
                 try {
                     JSONArray jsonArray = new JSONArray(result);
                     JSONObject jsonObject = jsonArray.getJSONObject(position);
-                    System.out.println("Adapter中数据："+jsonObject);
                     mAddress=jsonObject.getString("address");
                     mDate=jsonObject.getString("date");
                     mPatient=jsonObject.getString("patient");
@@ -116,30 +111,7 @@ public class ListViewAdapter extends BaseAdapter {
         holder.tv3_patient.setText("是否为四类患者："+mPatient);
         holder.tv3_date.setText("日期："+mDate);
         holder.tv3_address.setText("地点(经纬度)："+mAddress);
-//        Cursor cursor = queryValue(mName);
-//        if (cursor!= null) {
-//            if (cursor.moveToPosition(cursor.getCount()-position-1)) {
-//                    Record record = new Record(
-//                            cursor.getInt(cursor.getColumnIndex("record_id")),
-//                            cursor.getString(cursor.getColumnIndex("user_name")),
-//                            cursor.getDouble(cursor.getColumnIndex("temperature")),
-//                            cursor.getString(cursor.getColumnIndex("patient")),
-//                            cursor.getString(cursor.getColumnIndex("date")),
-//                            cursor.getString(cursor.getColumnIndex("address")));
-//                    holder.tv3_temperature.setText(record.getTemperature()+"℃");
-//                    holder.tv3_patient.setText("是否为四类患者："+record.getPatient());
-//                    holder.tv3_date.setText("日期："+record.getDate());
-//                    holder.tv3_address.setText("地点(经纬度)："+record.getAddress());
-//            }
-//            cursor.close();
-//        }
         return convertView;
     }
-
-//    private Cursor queryValue(String name) {
-//        Cursor cursor = mContext.getContentResolver().query(RECORD_URI, new String[] {"*"},"user_name =?",new String[]{ name },null);
-//        return cursor;
-//    }
-
 }
 

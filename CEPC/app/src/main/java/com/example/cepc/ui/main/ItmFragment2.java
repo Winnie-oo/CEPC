@@ -1,10 +1,8 @@
 package com.example.cepc.ui.main;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.cepc.R;
 import com.example.cepc.db.PgSqlUtil;
-import com.example.cepc.model.User;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;

@@ -5,8 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +21,6 @@ import com.example.cepc.LoginActivity;
 import com.example.cepc.MyService;
 import com.example.cepc.R;
 import com.example.cepc.db.PgSqlUtil;
-import com.example.cepc.model.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
