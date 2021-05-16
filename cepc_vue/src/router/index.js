@@ -6,12 +6,20 @@ import Records from "../views/Records";
 import AddUser from '../views/AddUser.vue'
 import AddRecord from '../views/AddRecord.vue'
 import UserUpdate from '../views/UserUpdate.vue'
+import RecordUpdate from "../views/RecordUpdate";
+
+import Login from "../views/Login";
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
+    name: "Login",
+    component: Login,
+  },
+  {
+    path: '/home',
     name: '社区用户',
     component: MyMenu,
     show:true,
@@ -30,8 +38,8 @@ const routes = [
     ]
   },
   {
-    path: '/',
-    name:"健康打卡",
+    path: '/home',
+    name:"健康填报",
     component: MyMenu,
     show:true,
     children:[
@@ -44,11 +52,11 @@ const routes = [
         path: '/addRecord',
         name: '添加记录',
         component: AddRecord
-      }
+      },
     ]
   },
   {
-    path: '/',
+    path: '/home',
     name: "修改用户信息",
     component: MyMenu,
     show:false,
@@ -58,7 +66,20 @@ const routes = [
           component: UserUpdate
         }
     ]
-  }
+  },
+  {
+    path: '/home',
+    name: "修改填报信息",
+    component: MyMenu,
+    show:false,
+    children: [
+      {
+        path: '/recordUpdate',
+        component: RecordUpdate
+      }
+    ]
+  },
+
 ]
 
 const router = new VueRouter({

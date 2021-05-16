@@ -95,11 +95,11 @@ public class ItmFragment2 extends Fragment {
 
     private int judge(String name) {
         int i = -1;//0为危险，1为限制，2为安全
-        int n = queryUserValue(name);//查找连续填报是否超过七日
+        int n = checkDayMark(name);//查找连续填报是否超过七日
         if(n!=0){
             i = 0;
             if (n>7){ i=i+1; }
-            n = queryRecordValue(name);//查找发烧记录以及确诊记录，来判断返回值
+            n = judgeRank(name);//查找发烧记录以及确诊记录，来判断返回值
             switch (n){
                 case 0:
                     i=0;//红
@@ -113,14 +113,13 @@ public class ItmFragment2 extends Fragment {
     }
 
 
-    private int queryUserValue(String name) {
+    private int checkDayMark(String name) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 String result = PgSqlUtil.getJsonContent(USER_URI+"/findByName/"+name);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    System.out.println(jsonObject.getInt("day_mark"));
                     daymark_2 = jsonObject.getInt("day_mark");
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -136,17 +135,16 @@ public class ItmFragment2 extends Fragment {
         return daymark_2;
     }
 
-    private int queryRecordValue(String name) {
-
+    private int judgeRank(String name) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 String result = PgSqlUtil.getJsonContent(RECORD_URI+"/judgeRank/"+name);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    System.out.println(result);
-                    System.out.println(jsonObject.getInt("date"));
+                    System.out.println("result："+result);
                     rank=Integer.valueOf(result);
+                    System.out.println("rank:"+rank);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -158,7 +156,7 @@ public class ItmFragment2 extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        return rank;
 //        Cursor cursor = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},
 //                "user_name =? and temperature > ?",new String[]{ name,"37.4"},null);
 //        if (cursor.getCount()==0) {
@@ -191,6 +189,6 @@ public class ItmFragment2 extends Fragment {
 //            cursor3.close();
 //        }
 //        cursor1.close();
-        return rank;
+
     }
 }

@@ -38,7 +38,7 @@ public class ItmFragment1 extends Fragment {
 
     private static final String IP="192.168.43.74";
     private static final String USER_URI = "http://"+IP+":8021/users";
-    private final static String RECORD_URI = "http://"+IP+":8021/records/";
+    private final static String RECORD_URI = "http://"+IP+":8021/records";
     private Context mContext;
 
     private ArrayList<String> arrayList = new ArrayList<>();
@@ -50,7 +50,7 @@ public class ItmFragment1 extends Fragment {
     private Button btSubmit;
     private TextView tvDate;
     private String name_1;
-    private String temperature_1;
+    private double temperature_1;
     private String patient_1;
     private String date_1;
     private String address_1 ;
@@ -86,18 +86,10 @@ public class ItmFragment1 extends Fragment {
             @Override
             public void run() {
                 String result = PgSqlUtil.getJsonContent(RECORD_URI+"/findByNameAndDate/"+name_1+"/"+date_1);
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    System.out.println(jsonObject.getString("name"));
-                    System.out.println(jsonObject.getString("password"));
-                    if(jsonObject.getString("date").isEmpty())
-                        record_currect=false;
-                    else {
-                        record_currect=true;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                if(result.isEmpty())
+                    record_currect=false;
+                else
+                    record_currect=true;
             }
         });
         thread.start();
@@ -127,8 +119,8 @@ public class ItmFragment1 extends Fragment {
             @Override
             public void onClick(View v) {
                 //获取地理位置
-                Intent startIntent = new Intent(mContext, MyService.class);
-                getActivity().startService(startIntent); // 开始启动服务
+                Intent intent= new Intent(mContext, MyService.class);
+                //getActivity().startService(intent); // 开始启动服务
                 //注册广播接收器
                 initBroadcastReceiver();
             }
@@ -137,20 +129,22 @@ public class ItmFragment1 extends Fragment {
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                temperature_1 = etTemperature.getText().toString();
-                address_1 = btAddr.getText().toString();
+                temperature_1 = Double.parseDouble(etTemperature.getText().toString());
+                //address_1 = btAddr.getText().toString();
+                address_1 = "海虹四栋";
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         PgSqlUtil.postJsonContent(RECORD_URI+"/save",
-                                "{name:"+name_1+
-                                ",temperature:"+temperature_1+
-                                ",patient:"+patient_1+
-                                ",date:"+date_1+
-                                ",address:"+address_1+"}");
+                                "{\"name\":"+name_1+
+                                        ",\"temperature\":"+temperature_1+
+                                        ",\"patient\":"+patient_1+
+                                        ",\"date\":"+date_1+
+                                        ",\"address\":"+address_1+"}");
                     }
                 });
                 thread.start();
+
 
                 btSubmit.setText("今日已填报");
                 btSubmit.setBackgroundColor(Color.parseColor("#777777"));

@@ -2,12 +2,16 @@ package com.example.cepc.db;
 
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -54,15 +58,16 @@ public class PgSqlUtil {
             connection.setDoInput(true);
             connection.setUseCaches(false);
             connection.connect();
+            OutputStream outputStream = connection.getOutputStream();
+            outputStream.write(obj.getBytes());
+            connection.connect();
 
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
-            writer.write(obj);
-            writer.close();
-
-            int responseCode = connection.getResponseCode();
-            if(responseCode == HttpURLConnection.HTTP_OK){
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String responseCode = connection.getResponseMessage();
+            if(responseCode.equals("success")){
                 String result = changeInputStream(connection.getInputStream());//将流转换为字符串。
-                Log.d("kwwl","result============="+result);
+                System.out.println("result+++++++++++++++++++++++++++++++"+result);
+                Log.d("填报成功","result============="+result);
             }
 
         } catch (Exception e) {

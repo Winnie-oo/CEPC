@@ -86,7 +86,6 @@ public class ItmFragment3 extends Fragment {
             public void run() {
                 String result = PgSqlUtil.getJsonContent(USER_URI+"/findByName/"+name);
                 try {
-                    InputStream inputStream;
                     JSONObject jsonObject = new JSONObject(result);
                     System.out.println(jsonObject.getInt("day_mark"));
                     daymark_3 = jsonObject.getInt("day_mark");
