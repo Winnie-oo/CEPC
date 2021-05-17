@@ -3,4 +3,5 @@
     <string name="tab_text_1">每日填报</string>
     <string name="tab_text_2">健康码</string>
     <string name="tab_text_3">个人中心</string>
+    <string name="title_activity_home">HomeActivity</string>
 </resources>

@@ -1,18 +1,14 @@
 package com.example.cepc.ui.main;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 
 import com.example.cepc.R;
 import com.example.cepc.db.PgSqlUtil;
@@ -24,34 +20,27 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class ItmFragment2 extends Fragment {
+public class CodeActivity extends AppCompatActivity {
 
-    private static final String IP="192.168.43.74";
-    private static final String USER_URI = "http://"+IP+":8021/users";
-    private final static String RECORD_URI = "http://"+IP+":8021/records/";
+    private static final String IP = "192.168.43.74";
+    private static final String USER_URI = "http://" + IP + ":8021/users";
+    private final static String RECORD_URI = "http://" + IP + ":8021/records/";
     private Context mContext;
 
     private String name_2;
-    private int daymark_2,rank;//rank: 0为危险，1为限制，2为安全
+    private int daymark_2, rank;//rank: 0为危险，1为限制，2为安全
     private ImageView imQR_code;
     private Button mUpdate_2;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getContext();
-    }
+        setContentView(R.layout.activity_code);
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_2, container, false);
-        imQR_code  = root.findViewById(R.id.qr_code);
-        mUpdate_2 = root.findViewById(R.id.update);
-        name_2 = getActivity().getIntent().getExtras().getString("username");
-        createQRcode("It is "+name_2+"'s QR code");
+        imQR_code = findViewById(R.id.qr_code);
+        mUpdate_2 = findViewById(R.id.update);
+        name_2 = this.getIntent().getExtras().getString("username");
+        createQRcode("It is " + name_2 + "'s QR code");
 
         mUpdate_2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,9 +48,7 @@ public class ItmFragment2 extends Fragment {
                 createQRcode("It is "+name_2+"'s QR code");
             }
         });
-        return root;
     }
-
     public void createQRcode(String string){
         try {
             BitMatrix bitMatrix = new QRCodeWriter().encode(string, BarcodeFormat.QR_CODE, 250, 250);
@@ -69,7 +56,7 @@ public class ItmFragment2 extends Fragment {
             int color = Color.BLACK;
             switch (judge(name_2)){
                 case -1:
-                     break;
+                    break;
                 case 0:
                     color = Color.RED; break;
                 case 1:
@@ -157,38 +144,5 @@ public class ItmFragment2 extends Fragment {
             e.printStackTrace();
         }
         return rank;
-//        Cursor cursor = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},
-//                "user_name =? and temperature > ?",new String[]{ name,"37.4"},null);
-//        if (cursor.getCount()==0) {
-//            //判断有无发烧，无发烧则+1
-//            cursor.close();
-//            m=m+1;
-//            //所有记录和patient=“否”的记录作比较，一样则不属于四类人员，不一样则属于四类人员
-//            cursor= mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},
-//                    "user_name=? and patient=?",new String[]{ name , "否" },null);
-//            int a = cursor.getCount();
-//            cursor.close();
-//            cursor = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},
-//                    "user_name=?",new String[]{ name },null);
-//            int b =cursor.getCount();
-//            if (a==b) {m=m+1;}
-//            else {m=0;}
-//        }
-//        cursor.close();
-//        Cursor cursor1 = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},"user_name =? and temperature > ?",new String[]{ name,"37.4"},null);
-//        if (cursor1.getCount()==0) {
-//            cursor1.close();
-//            m=m+1;
-//            Cursor cursor2= mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},"user_name=? and patient=?",new String[]{ name , "否" },null);
-//            int a = cursor2.getCount();
-//            cursor2.close();
-//            Cursor cursor3 = mContext.getContentResolver().query(RECORD_URI, new String[]{"*"},"user_name=?",new String[]{ name },null);
-//            int b =cursor3.getCount();
-//            if (a==b) {m=m+1;}
-//            else {m=0;}
-//            cursor3.close();
-//        }
-//        cursor1.close();
-
     }
 }

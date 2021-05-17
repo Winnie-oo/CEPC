@@ -18,7 +18,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String IP="192.168.43.74";
     private static final String URL = "http://"+IP+":8021/users";
-    private Context mContext;
     private EditText etUserName,etPassword,etAddress;
     private Button btLogin,btApply;
 
@@ -29,7 +28,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mContext=this;
 
         etUserName = findViewById(R.id.username);
         etPassword = findViewById(R.id.password);
@@ -80,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                         Bundle bundle = new Bundle();
                         bundle.putString("username", mUserName);
                         //跳转MainActivity
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         intent.putExtras(bundle);
                         startActivity(intent);
                         finish();

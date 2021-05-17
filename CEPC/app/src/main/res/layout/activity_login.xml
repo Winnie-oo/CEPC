@@ -6,6 +6,13 @@
     android:id="@+id/m3_Login"
     android:orientation="vertical"
     android:padding="15dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purple_700"
+        android:text="《社区疫情防控》"
+        android:gravity="center"
+        android:textSize="35sp"/>
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"

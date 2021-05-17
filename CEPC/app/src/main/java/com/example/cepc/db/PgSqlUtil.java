@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -51,29 +52,32 @@ public class PgSqlUtil {
 
     public static String postJsonContent(String url_path,String obj) {
         try {
+            String result="";
             URL url = new URL(url_path);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
             connection.setDoInput(true);
             connection.setUseCaches(false);
-            connection.connect();
-            OutputStream outputStream = connection.getOutputStream();
-            outputStream.write(obj.getBytes());
-            connection.connect();
+            DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
+            outputStream.writeBytes(obj);
+            outputStream.flush();
+            outputStream.close();
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String responseCode = connection.getResponseMessage();
-            if(responseCode.equals("success")){
-                String result = changeInputStream(connection.getInputStream());//将流转换为字符串。
+            if(connection.getResponseCode()==HttpURLConnection.HTTP_OK){
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine = null;
+                while((inputLine=in.readLine())!=null)
+                {
+                    result+=inputLine;
+                }
                 System.out.println("result+++++++++++++++++++++++++++++++"+result);
                 Log.d("填报成功","result============="+result);
             }
-
+            connection.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return "";
     }
     public static String putJsonContent(String url_path) {

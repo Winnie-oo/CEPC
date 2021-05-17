@@ -33,7 +33,7 @@ public class RecordsHandler {
     }
 
     @PostMapping("/save")
-    public String save(@RequestBody Records records){
+    public String save( Records records){
         System.out.println("result+++++++++++++++++++++++++++++++"+records);
         Records result = recordsRepository.save(records);
         if(result!=null){

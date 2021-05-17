@@ -9,6 +9,7 @@ import UserUpdate from '../views/UserUpdate.vue'
 import RecordUpdate from "../views/RecordUpdate";
 
 import Login from "../views/Login";
+import Home from "../views/Home";
 
 Vue.use(VueRouter)
 
@@ -20,10 +21,23 @@ const routes = [
   },
   {
     path: '/home',
+    name: "首页",
+    component: MyMenu,
+    show:true,
+    redirect:'/home',
+    children: [
+      {
+        path: '/home',
+        component: Home
+      }
+    ]
+  },
+  {
+    path: '/home',
     name: '社区用户',
     component: MyMenu,
     show:true,
-    redirect:'/records',
+    redirect:'/home',
     children:[
       {
         path: '/users',

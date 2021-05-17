@@ -8,22 +8,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="right">
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="通行码"
             android:textSize="40sp"
-            android:gravity="center"/>
+            android:layout_marginRight="50dp"/>
         <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/update"
             android:text="update"
-            android:textSize="25sp"/>
+            android:textSize="15sp"/>
     </LinearLayout>
+    <ImageView
+        android:id="@+id/qr_code"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="6dp"
+        android:gravity="center"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -43,10 +48,4 @@
         android:text="红码————禁止出入"
         android:textSize="15sp"
         android:textColor="#FFFF0000"/>
-    <ImageView
-        android:id="@+id/qr_code"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginTop="15dp"
-        android:gravity="center"/>
 </LinearLayout>
