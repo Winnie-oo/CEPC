@@ -25,12 +25,10 @@ public class CodeActivity extends AppCompatActivity {
     private static final String IP = "192.168.43.74";
     private static final String USER_URI = "http://" + IP + ":8021/users";
     private final static String RECORD_URI = "http://" + IP + ":8021/records/";
-    private Context mContext;
 
     private String name_2;
     private int daymark_2, rank;//rank: 0为危险，1为限制，2为安全
     private ImageView imQR_code;
-    private Button mUpdate_2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +36,10 @@ public class CodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_code);
 
         imQR_code = findViewById(R.id.qr_code);
-        mUpdate_2 = findViewById(R.id.update);
         name_2 = this.getIntent().getExtras().getString("username");
         createQRcode("It is " + name_2 + "'s QR code");
 
-        mUpdate_2.setOnClickListener(new View.OnClickListener() {
+        imQR_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createQRcode("It is "+name_2+"'s QR code");

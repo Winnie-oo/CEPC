@@ -1,19 +1,10 @@
 package com.example.cepc.db;
 
-import android.util.Log;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,6 +18,7 @@ public class PgSqlUtil {
 
     public static String getJsonContent(String url_path) {
         try{
+            System.out.println("get请求中URL-------"+url_path);
             URL url = new URL(url_path);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(3000);
@@ -38,10 +30,9 @@ public class PgSqlUtil {
             {
                 return changeInputStream(connection.getInputStream());
             }else {
-                System.out.println(response);
+                System.out.println("get请求中状态码-------"+response);
                 return "not exsits";
             }
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -49,6 +40,7 @@ public class PgSqlUtil {
         }
         return "";
     }
+
 
     public static String postJsonContent(String url_path,String obj) {
         try {
@@ -63,7 +55,7 @@ public class PgSqlUtil {
             outputStream.writeBytes(obj);
             outputStream.flush();
             outputStream.close();
-
+            System.out.println("post状态码-------"+connection.getResponseCode());
             if(connection.getResponseCode()==HttpURLConnection.HTTP_OK){
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine = null;
@@ -71,8 +63,7 @@ public class PgSqlUtil {
                 {
                     result+=inputLine;
                 }
-                System.out.println("result+++++++++++++++++++++++++++++++"+result);
-                Log.d("填报成功","result============="+result);
+                System.out.println("post中result------------"+result);
             }
             connection.disconnect();
         } catch (Exception e) {
@@ -80,13 +71,30 @@ public class PgSqlUtil {
         }
         return "";
     }
+
+
     public static String putJsonContent(String url_path) {
         return "";
     }
+
+
     public static void deleteJsonContent(String url_path) {
+        try{
+            URL url = new URL(url_path);
+            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setDoOutput(true);
+            httpCon.setRequestMethod("DELETE");
+            httpCon.connect();
+            int response = httpCon.getResponseCode();
+            String string = Integer.toString(response);
+            System.out.println("delete中状态码-----"+string);
+            //System.out.println("PgUtil中数据："+connection);
 
-
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
     private static String changeInputStream(InputStream inputStream) throws IOException {
             BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));

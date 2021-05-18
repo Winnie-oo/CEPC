@@ -25,6 +25,9 @@ public class MineActivity extends AppCompatActivity {
     private static final String IP="192.168.43.74";
     private static final String USER_URI = "http://"+IP+":8021/users";
     private final static String RECORD_URI = "http://"+IP+":8021/records/";
+    private final static String VACCINE_URI = "http://"+IP+":8021/vaccines";
+    private final static String COMMUNITY_URI = "http://"+IP+":8021/community";
+    private final static String APPOINTRECORD_URI = "http://"+IP+":8021/appointRecord";
 
     static final String action = "ha";
 
@@ -39,8 +42,6 @@ public class MineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine);
-
-
 
         tv3_name = findViewById(R.id.person_name);
         tv3_daymark = findViewById(R.id.person_daymark);

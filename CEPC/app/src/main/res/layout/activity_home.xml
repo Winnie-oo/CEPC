@@ -18,6 +18,7 @@
                 android:layout_height="244dp"
                 android:background="@drawable/community" />
             <TextView
+                android:id="@+id/theTopText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
@@ -108,7 +109,7 @@
                 </LinearLayout>
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/cardview_1"
+                        android:id="@+id/cardView_1"
                         app:cardBackgroundColor="@color/green"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -138,7 +139,7 @@
                        </LinearLayout>
                         </androidx.cardview.widget.CardView>
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/cardview_2"
+                        android:id="@+id/cardView_2"
                         app:cardBackgroundColor="@color/pink"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

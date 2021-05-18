@@ -96,6 +96,7 @@ export default {
         if (valid) {
           console.log('submit!');
           axios.post('http://localhost:8021/users/save',this.ruleForm).then(function (resp){
+            console.log(this.ruleForm);
             if(resp.data == 'success'){
               _this.$alert('添加成功', '消息', {
                 confirmButtonText: '确定',

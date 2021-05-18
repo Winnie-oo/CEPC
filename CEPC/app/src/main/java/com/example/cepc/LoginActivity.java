@@ -50,8 +50,6 @@ public class LoginActivity extends AppCompatActivity {
                             String result = PgSqlUtil.getJsonContent(URL+"/findByName/"+mUserName);
                             try {
                                 JSONObject jsonObject = new JSONObject(result);
-                                System.out.println(jsonObject.getString("name"));
-                                System.out.println(jsonObject.getString("password"));
                                 if(jsonObject.getString("password").isEmpty())
                                     user_currect=true;
                                 if(jsonObject.getString("password").equals(mPassword) ) {
@@ -106,6 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                                 JSONObject jsonObject = new JSONObject(result);
                                 if(jsonObject.getString("name") .isEmpty()) {
                                     user_currect = true;
+
                                     PgSqlUtil.postJsonContent(URL+"/save","{name:"+mUserName+",password:"+mPassword+",address:"+mAddress+"}");
                                 }else user_currect = false;
                             } catch (JSONException e) {

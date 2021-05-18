@@ -15,13 +15,8 @@
             android:layout_height="wrap_content"
             android:text="通行码"
             android:textSize="40sp"
-            android:layout_marginRight="50dp"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/update"
-            android:text="update"
-            android:textSize="15sp"/>
+            android:layout_marginRight="50dp"
+            android:textColor="@color/brown" />
     </LinearLayout>
     <ImageView
         android:id="@+id/qr_code"

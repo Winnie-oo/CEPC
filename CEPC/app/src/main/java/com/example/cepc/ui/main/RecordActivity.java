@@ -22,6 +22,7 @@ import com.example.cepc.db.PgSqlUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,6 +35,9 @@ public class RecordActivity extends AppCompatActivity {
     private static final String IP="192.168.43.74";
     private static final String USER_URI = "http://"+IP+":8021/users";
     private final static String RECORD_URI = "http://"+IP+":8021/records";
+    private final static String VACCINE_URI = "http://"+IP+":8021/vaccines";
+    private final static String COMMUNITY_URI = "http://"+IP+":8021/community";
+    private final static String APPOINTRECORD_URI = "http://"+IP+":8021/appointRecord";
 
     private Button btAddr ;
     private EditText etTemperature;
@@ -58,7 +62,7 @@ public class RecordActivity extends AppCompatActivity {
         btSubmit = findViewById(R.id.submit1);
         tvDate = findViewById(R.id.date);
         mRadio = findViewById(R.id.radio_group1);
-        name_1 = RecordActivity.this.getIntent().getExtras().getString("username");
+        name_1 = this.getIntent().getExtras().getString("username");
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(System.currentTimeMillis());
@@ -111,7 +115,6 @@ public class RecordActivity extends AppCompatActivity {
             }
         });
 
-
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,16 +124,20 @@ public class RecordActivity extends AppCompatActivity {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String str ="name="+ name_1+
+                        String str ="name="+ URLEncoder.encode(name_1) +
                                 "&temperature="+URLEncoder.encode(""+temperature_1)+
                                 "&patient="+URLEncoder.encode(patient_1)+
                                 "&date="+URLEncoder.encode(date_1)+
                                 "&address="+URLEncoder.encode(address_1);
-                        System.out.println(str);
                         PgSqlUtil.postJsonContent(RECORD_URI+"/save",str);
                     }
                 });
                 thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 btSubmit.setText("今日已填报");
                 btSubmit.setBackgroundColor(Color.parseColor("#777777"));
                 btSubmit.setTextColor(Color.parseColor("#F7F7F7"));
@@ -141,9 +148,9 @@ public class RecordActivity extends AppCompatActivity {
                 RecordActivity.this.sendBroadcast(intent);
             }
         });
-
-
     }
+
+
     //获取广播数据
     public void initBroadcastReceiver (){
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {

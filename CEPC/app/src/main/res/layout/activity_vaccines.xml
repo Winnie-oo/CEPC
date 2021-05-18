@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:text="预约疫苗"
+        android:textColor="@color/brown" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/appoint_cancle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="已预约 2021-6-1 的疫苗接种！"
+                android:textSize="18sp"
+                android:layout_margin="20dp"
+                android:padding="10dp"
+                android:drawableRight="@mipmap/cancle"
+                android:background="@drawable/edit_background"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                android:background="@drawable/edit_background">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="身份证："
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"/>
+                <EditText
+                    android:id="@+id/et1_id_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="(请填写)"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:maxLines="1"
+                    android:layout_marginRight="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                android:background="@drawable/edit_background">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="选择日期："
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"/>
+                <Spinner
+                    android:id="@+id/spinner_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"/>
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/submit_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="预约"
+                android:background="@color/colorPrimary"
+                android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/date_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="当前日期：2021年5月10号"
+                android:gravity="center"/>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

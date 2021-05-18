@@ -16,6 +16,7 @@ import org.json.JSONObject;
 public class ListViewAdapter extends BaseAdapter {
     private static final String IP="192.168.43.74";
     private final static String RECORD_URI = "http://"+IP+":8021/records/";
+
     private Context mContext;
 
     private String mName;
