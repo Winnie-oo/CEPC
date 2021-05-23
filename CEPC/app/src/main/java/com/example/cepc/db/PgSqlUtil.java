@@ -74,6 +74,23 @@ public class PgSqlUtil {
 
 
     public static String putJsonContent(String url_path) {
+        try {
+            String result="";
+            URL url = new URL(url_path);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setUseCaches(false);
+            System.out.println("put状态码-------"+connection.getResponseCode());
+            if(connection.getResponseCode()==HttpURLConnection.HTTP_OK){
+
+                System.out.println("put中result------------"+result);
+            }
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "";
     }
 

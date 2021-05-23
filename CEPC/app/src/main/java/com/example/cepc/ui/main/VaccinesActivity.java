@@ -1,6 +1,9 @@
 package com.example.cepc.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.cepc.HomeActivity;
+import com.example.cepc.MyApp;
 import com.example.cepc.R;
 import com.example.cepc.db.PgSqlUtil;
 
@@ -11,11 +14,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.SyncStateContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +44,7 @@ public class VaccinesActivity extends AppCompatActivity {
     private final static String COMMUNITY_URI = "http://"+IP+":8021/community";
     private final static String APPOINTRECORD_URI = "http://"+IP+":8021/appointRecord";
 
-    private String VACCINE_ACTION = "appoint_cancle";
+    private final String  VACCINE_ACTION = "appoint_cancle";
 
     private String[] myDate = null;
     private String str_id, str_date, str_name,str1;
@@ -48,19 +56,13 @@ public class VaccinesActivity extends AppCompatActivity {
     private TextView tv_cancle,tv_date_5;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vaccines);
         initView();
         someListener();
-//        mySpinner_5.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                str_date = parent.getItemAtPosition(position).toString();
-//                Toast.makeText(VaccinesActivity.this, str_id,Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
     }
     private void initView() {
@@ -74,38 +76,38 @@ public class VaccinesActivity extends AppCompatActivity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(System.currentTimeMillis());
         tv_date_5.setText(simpleDateFormat.format(date));
-       // initBroadcastReceiver ();
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 String result1 = PgSqlUtil.getJsonContent(APPOINTRECORD_URI+"/findByName/"+URLEncoder.encode(str_name));
-
+                String str_temp = PgSqlUtil.getJsonContent(VACCINE_URI+"/findAll");
+                System.out.println("获取疫苗数量-------"+str_temp);
+                //String str_temp = VaccinesActivity.this.getIntent().getExtras().getString("ListDate");
+                try {
+                    jsonArray = new JSONArray(str_temp);
+                    String[] temp = new String[jsonArray.length()];
+                    for(int i=0;i<jsonArray.length();i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        temp[i]=jsonObject.getString("date")+"剩余"+jsonObject.getString("number")+"名额";
+                    }
+                    myDate = temp;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 if(result1.isEmpty()){
                     //没有预约过
                     tv_cancle.setVisibility(View.GONE);
                     ifAppoint =false;
-                    String str_temp = PgSqlUtil.getJsonContent(VACCINE_URI+"/findAll");
-                    System.out.println("获取疫苗数量-------"+str_temp);
-                    //String str_temp = VaccinesActivity.this.getIntent().getExtras().getString("ListDate");
-                    try {
-                        jsonArray = new JSONArray(str_temp);
-                        String[] temp = new String[jsonArray.length()];
-                        for(int i=0;i<jsonArray.length();i++){
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            temp[i]=jsonObject.getString("date")+"剩余"+jsonObject.getString("number")+"名额";
-                        }
-                        myDate = temp;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
                 }else {
                     //预约过
                     ifAppoint = true;
                     try {
                         JSONObject jsonObject = new JSONObject(result1);
                         tv_cancle.setVisibility(View.VISIBLE);
-                        tv_cancle.setText("已预约"+jsonObject.getString("date")+"疫苗接种！");
+                        str_date=jsonObject.getString("date");
+                        tv_cancle.setText("已预约"+ str_date+"疫苗接种！");
+                        System.out.println("查看看库里的数据日期------"+str_date);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -118,18 +120,17 @@ public class VaccinesActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,myDate);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mySpinner_5.setAdapter(adapter);
         if(ifAppoint) {
             //设置文本显示预约信息
             btSubmit_5.setText("已预约");
             btSubmit_5.setEnabled(false);
             et_5.setEnabled(false);
             mySpinner_5.setEnabled(false);
-        }else {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,myDate);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            mySpinner_5.setAdapter(adapter);
         }
+
     }
 
 
@@ -155,6 +156,8 @@ public class VaccinesActivity extends AppCompatActivity {
                                     "&id_card="+ str_id;
                             System.out.println(str);
                             PgSqlUtil.postJsonContent(APPOINTRECORD_URI+"/save",str);
+                            PgSqlUtil.putJsonContent(COMMUNITY_URI+"/decreaseVaccines/"+1);
+                            PgSqlUtil.putJsonContent(VACCINE_URI+"/decreaseVaccines/"+str_date);
                         }
                     });
                     thread.start();
@@ -172,9 +175,9 @@ public class VaccinesActivity extends AppCompatActivity {
                     tv_cancle.setVisibility(View.VISIBLE);
                     tv_cancle.setText("已预约"+str_date+"疫苗接种！");
 
-//                    Intent intent = new Intent();
-//                    intent.setAction(VACCINE_ACTION);
-//                    VaccinesActivity.this.sendBroadcast(intent);
+                    Intent intent = new Intent();
+                    intent.setAction(VACCINE_ACTION);
+                    VaccinesActivity.this.sendBroadcast(intent);
                 }
             }
         });
@@ -185,7 +188,18 @@ public class VaccinesActivity extends AppCompatActivity {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        String result1 = PgSqlUtil.getJsonContent(APPOINTRECORD_URI+"/findByName/"+URLEncoder.encode(str_name));
+                        System.out.println("eeeeeeeee------"+result1);
+                        try {
+                            JSONObject jsonObject = new JSONObject(result1);
+                            str_date=jsonObject.getString("date");
+                            System.out.println("查看日期------"+str_date);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         PgSqlUtil.deleteJsonContent(APPOINTRECORD_URI+"/deleteByName/"+URLEncoder.encode(str_name));
+                        PgSqlUtil.putJsonContent(COMMUNITY_URI+"/increaseVaccines/"+1);
+                        PgSqlUtil.putJsonContent(VACCINE_URI+"/increaseVaccines/"+str_date);
                     }
                 });
                 thread.start();
@@ -200,27 +214,14 @@ public class VaccinesActivity extends AppCompatActivity {
                 btSubmit_5.setEnabled(true);
                 et_5.setEnabled(true);
                 mySpinner_5.setEnabled(true);
-//                Intent intent = new Intent();
-//                intent.setAction(VACCINE_ACTION);
-//                VaccinesActivity.this.sendBroadcast(intent);
+                Intent intent = new Intent();
+                intent.setAction(VACCINE_ACTION);
+                VaccinesActivity.this.sendBroadcast(intent);
+
             }
         });
+
     }
 
-    //获取广播数据
-    public void initBroadcastReceiver (){
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Bundle bundle = intent.getExtras();
-                if (intent.getAction().equals(VACCINE_ACTION)) {
-                    Toast.makeText(VaccinesActivity.this, "传进来了", Toast.LENGTH_SHORT).show();
-                    //tv_cancle.notify();
-                }
-            }
-        };
-        IntentFilter filter=new IntentFilter();
-        filter.addAction(VACCINE_ACTION);
-        this.registerReceiver(broadcastReceiver,filter);
-    }
+
 }

@@ -1,7 +1,6 @@
 package com.example.cepcspringboot.controller;
 
 import com.example.cepcspringboot.entity.Community;
-import com.example.cepcspringboot.entity.Users;
 import com.example.cepcspringboot.repository.CommunityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,10 +20,36 @@ public class CommunityHandler {
         return communityRepository.findAll(pageable);
     }
 
-    @PutMapping("/addVaccine")
-    public void addVaccine(@RequestBody Integer num){
-        Community community = communityRepository.findAll().get(1);
-        community.setVaccines(num);
+    @GetMapping("/find")
+    public Community find(){
+        return communityRepository.findAll().get(0);
+    }
+
+    @PutMapping("/increaseVaccines/{num}")
+    public void increaseVaccines(@PathVariable("num") Integer num){
+        Community community = communityRepository.findAll().get(0);
+        community.setVaccines(community.getVaccines()+num);
+        communityRepository.save(community);
+    }
+
+    @PutMapping("/decreaseVaccines/{num}")
+    public void decreaseVaccines(@PathVariable("num") Integer num){
+        Community community = communityRepository.findAll().get(0);
+        community.setVaccines(community.getVaccines()-num);
+        communityRepository.save(community);
+    }
+
+    @PutMapping("/increasePatients/{num}")
+    public void increasePatients(@PathVariable("num") Integer num){
+        Community community = communityRepository.findAll().get(0);
+        community.setPatients(community.getPatients()+num);
+        communityRepository.save(community);
+    }
+
+    @PutMapping("/decreasePatients/{num}")
+    public void decreasePatients(@PathVariable("num") Integer num){
+        Community community = communityRepository.findAll().get(0);
+        community.setPatients(community.getPatients()-num);
         communityRepository.save(community);
     }
 }

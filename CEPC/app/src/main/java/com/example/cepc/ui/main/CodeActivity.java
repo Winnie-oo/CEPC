@@ -51,7 +51,7 @@ public class CodeActivity extends AppCompatActivity {
             BitMatrix bitMatrix = new QRCodeWriter().encode(string, BarcodeFormat.QR_CODE, 250, 250);
             int fixbit[]=new int[bitMatrix.getWidth()*bitMatrix.getHeight()];
             int color = Color.BLACK;
-            switch (judge(name_2)){
+                switch (judge(name_2)){
                 case -1:
                     break;
                 case 0:

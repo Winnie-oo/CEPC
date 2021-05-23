@@ -14,6 +14,5 @@ public class Community {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer patients;
-    private Integer clock_in;
     private Integer vaccines;
 }

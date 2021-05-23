@@ -122,7 +122,6 @@
                            android:layout_height="wrap_content"
                            android:orientation="vertical">
                            <TextView
-                               android:id="@+id/text0_6"
                                android:layout_width="match_parent"
                                android:layout_height="wrap_content"
                                android:text="预约疫苗"
@@ -130,7 +129,7 @@
                                android:gravity="center"
                                android:layout_marginBottom="5dp"/>
                            <TextView
-                               android:id="@+id/text0_7"
+                               android:id="@+id/text0_6"
                                android:layout_width="match_parent"
                                android:layout_height="wrap_content"
                                android:text="剩余名额："
@@ -153,15 +152,15 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/text0_8"
+                                android:id="@+id/text0_7"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="5dp"
                                 android:gravity="center"
-                                android:text="本社区感染人数：0"
+                                android:text="本社区人数：13201"
                                 android:textSize="25sp" />
                             <TextView
-                                android:id="@+id/text0_9"
+                                android:id="@+id/text0_8"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="确诊人数：0"

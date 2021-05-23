@@ -47,7 +47,7 @@ public class MineActivity extends AppCompatActivity {
         tv3_daymark = findViewById(R.id.person_daymark);
         listView = findViewById(R.id.person_lv);
         mbt_exit = findViewById(R.id.exit_3);
-        initBroadcastReceiver ();
+        //initBroadcastReceiver ();
 
         name_3 = MineActivity.this.getIntent().getExtras().getString("username");
         tv3_name.setText(name_3);

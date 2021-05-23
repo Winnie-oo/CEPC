@@ -43,6 +43,7 @@ public class AppointHandler {
     @DeleteMapping("/deleteByName/{name}")
     public void deleteByName(@PathVariable("name") String name){
         System.out.println("----------------"+name);
+        String date = appointRepository.findByNameLike(name).getDate();
         appointRepository.deleteByNameLike(name);
     }
 

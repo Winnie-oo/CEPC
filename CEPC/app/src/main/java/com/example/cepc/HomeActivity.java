@@ -1,11 +1,17 @@
 package com.example.cepc;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.os.Handler;
+import android.os.Message;
+import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +26,10 @@ import com.example.cepc.ui.main.RecordActivity;
 import com.example.cepc.ui.main.VaccinesActivity;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -28,7 +38,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnTouchListe
 
     private LinearLayout mTitleBar;
     private ScrollView mScrollView;
-    private TextView mText_0,mText_4,mText_3,mText_5,Top_text;
+    private TextView mText_0,mText_4,mText_3,mText_5,mText_6,mText_7,mText_8,Top_text;
     private String myName;
     private Bundle bundle;
     private CardView myCard_1,myCard_2;
@@ -76,9 +86,32 @@ public class HomeActivity extends AppCompatActivity implements View.OnTouchListe
         mText_3=findViewById(R.id.text0_3);
         mText_4=findViewById(R.id.text0_4);
         mText_5=findViewById(R.id.text0_5);
+        mText_6=findViewById(R.id.text0_6);
+        mText_8=findViewById(R.id.text0_8);
+
 //        //让TextView失去焦点
 //        mText_0.setFocusable(false);
 
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String result = PgSqlUtil.getJsonContent(COMMUNITY_URI+"/find");
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    mText_6.setText("剩余名额：" + jsonObject.getString("vaccines"));
+                    mText_8.setText("确诊人数："+jsonObject.getString("patients"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        initBroadcastReceiver ();
     }
 
 
@@ -165,6 +198,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnTouchListe
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+
+    //获取广播数据
+    public void initBroadcastReceiver (){
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Bundle bundle = intent.getExtras();
+                if (intent.getAction().equals("appoint_cancle")) {
+                    initView();
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("appoint_cancle");
+        HomeActivity.this.registerReceiver(broadcastReceiver,filter);
     }
 
     /**
