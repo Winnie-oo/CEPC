@@ -18,7 +18,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String IP="192.168.43.74";
     private static final String URL = "http://"+IP+":8021/users";
-    private EditText etUserName,etPassword,etAddress;
+    private EditText etUserName,etPassword;
     private Button btLogin,btApply;
 
     private boolean password_currect = false;
@@ -29,11 +29,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        etUserName = findViewById(R.id.username);
-        etPassword = findViewById(R.id.password);
-        etAddress = findViewById(R.id.address);
-        btLogin = findViewById(R.id.bt3_login);
-        btApply = findViewById(R.id.bt3_apply);
+        etUserName = findViewById(R.id.lg_name);
+        etPassword = findViewById(R.id.lg_pw);
+        btLogin = findViewById(R.id.lg_login);
+        btApply = findViewById(R.id.lg_apply);
 
         btLogin.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
@@ -90,36 +89,9 @@ public class LoginActivity extends AppCompatActivity {
         btApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mUserName = etUserName.getText().toString();
-                String mPassword = etPassword.getText().toString();
-                String mAddress = etAddress.getText().toString();
-                if (mUserName.equals("") || mPassword.equals(""))
-                    Toast.makeText(LoginActivity.this, "账号密码不能为空", Toast.LENGTH_SHORT).show();
-                else {
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String result = PgSqlUtil.getJsonContent(URL+"/findByName/"+mUserName);
-                            try {
-                                JSONObject jsonObject = new JSONObject(result);
-                                if(jsonObject.getString("name") .isEmpty()) {
-                                    user_currect = true;
-
-                                    PgSqlUtil.postJsonContent(URL+"/save","{name:"+mUserName+",password:"+mPassword+",address:"+mAddress+"}");
-                                }else user_currect = false;
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    thread.start();
-
-                    if(user_currect) {
-                        Toast.makeText(LoginActivity.this, "申请用户成功", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "用户已存在", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

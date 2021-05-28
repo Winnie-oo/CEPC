@@ -87,8 +87,7 @@
                         android:id="@+id/radio0"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="否"
-                        android:checked="true"/>
+                        android:text="否"/>
                     <RadioButton
                         android:id="@+id/radio1"
                         android:layout_width="match_parent"

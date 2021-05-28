@@ -51,15 +51,18 @@
                             android:drawableTop="@mipmap/dailymark"
                             android:textColor="@color/brown"
                             android:layout_marginRight="13dp"/>
+
                         <TextView
-                            android:id="@+id/text0_1"
+                            android:id="@+id/text0_5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="行程报备"
-                            android:drawableTop="@mipmap/baobei"
+                            android:text="约疫苗"
                             android:textSize="15sp"
+                            android:drawableTop="@mipmap/yimiao"
                             android:textColor="@color/brown"
-                            android:layout_marginRight="13dp"/>
+                            android:layout_marginRight="13dp"
+                            android:gravity="center"/>
+
                         <TextView
                             android:id="@+id/text0_2"
                             android:layout_width="wrap_content"
@@ -95,16 +98,16 @@
                         android:layout_marginLeft="10dp"
                         android:gravity="center"/>
                     <TextView
-                        android:id="@+id/text0_5"
+                        android:id="@+id/text0_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="约疫苗"
+                        android:text="行程报备"
+                        android:drawableTop="@mipmap/baobei"
                         android:textSize="15sp"
-                        android:drawableTop="@mipmap/yimiao"
                         android:textColor="@color/brown"
                         android:layout_marginTop="10dp"
-                        android:layout_marginLeft="25dp"
-                        android:gravity="center"/>
+                        android:layout_marginLeft="10dp"
+                       />
 
                 </LinearLayout>
 

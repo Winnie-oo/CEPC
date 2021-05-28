@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.cepc.db.PgSqlUtil;
 import com.example.cepc.ui.main.CodeActivity;
+import com.example.cepc.ui.main.LookActivity;
 import com.example.cepc.ui.main.MineActivity;
 import com.example.cepc.ui.main.RecordActivity;
 import com.example.cepc.ui.main.VaccinesActivity;
@@ -38,7 +39,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnTouchListe
 
     private LinearLayout mTitleBar;
     private ScrollView mScrollView;
-    private TextView mText_0,mText_4,mText_3,mText_5,mText_6,mText_7,mText_8,Top_text;
+    private TextView mText_0,mText_2,mText_4,mText_3,mText_5,mText_6,mText_7,mText_8,Top_text;
     private String myName;
     private Bundle bundle;
     private CardView myCard_1,myCard_2;
@@ -83,6 +84,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnTouchListe
         updateText();
 
         mText_0=findViewById(R.id.text0_0);
+        mText_2=findViewById(R.id.text0_2);
         mText_3=findViewById(R.id.text0_3);
         mText_4=findViewById(R.id.text0_4);
         mText_5=findViewById(R.id.text0_5);
@@ -127,7 +129,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnTouchListe
                 startActivity(intent);
             }
         });
-
         mText_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +136,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnTouchListe
                 bundle.putString("username", myName);
                 //跳转CodeActivity
                 Intent intent = new Intent(HomeActivity.this, CodeActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        mText_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bundle = new Bundle();
+                bundle.putString("username", myName);
+                //跳转LookActivity
+                Intent intent = new Intent(HomeActivity.this, LookActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

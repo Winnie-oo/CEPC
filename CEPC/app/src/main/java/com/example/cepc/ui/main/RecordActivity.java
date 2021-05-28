@@ -33,11 +33,8 @@ import java.util.Date;
 public class RecordActivity extends AppCompatActivity {
 
     private static final String IP="192.168.43.74";
-    private static final String USER_URI = "http://"+IP+":8021/users";
     private final static String RECORD_URI = "http://"+IP+":8021/records";
-    private final static String VACCINE_URI = "http://"+IP+":8021/vaccines";
-    private final static String COMMUNITY_URI = "http://"+IP+":8021/community";
-    private final static String APPOINTRECORD_URI = "http://"+IP+":8021/appointRecord";
+
 
     private Button btAddr ;
     private EditText etTemperature;
@@ -118,36 +115,60 @@ public class RecordActivity extends AppCompatActivity {
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                temperature_1 = Double.parseDouble(etTemperature.getText().toString());
-                //address_1 = btAddr.getText().toString();
-                address_1 = "海虹四栋";
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String str ="name="+ URLEncoder.encode(name_1) +
-                                "&temperature="+URLEncoder.encode(""+temperature_1)+
-                                "&patient="+URLEncoder.encode(patient_1)+
-                                "&date="+URLEncoder.encode(date_1)+
-                                "&address="+URLEncoder.encode(address_1);
-                        PgSqlUtil.postJsonContent(RECORD_URI+"/save",str);
-                    }
-                });
-                thread.start();
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if(isNotDouble(etTemperature.getText().toString())){
+                    Toast.makeText(RecordActivity.this, "输入不规范！", Toast.LENGTH_SHORT).show();
                 }
-                btSubmit.setText("今日已填报");
-                btSubmit.setBackgroundColor(Color.parseColor("#777777"));
-                btSubmit.setTextColor(Color.parseColor("#F7F7F7"));
-                btSubmit.setEnabled(false);
+                else {
+                    temperature_1 = Double.parseDouble(etTemperature.getText().toString());
+                    address_1 = "海虹四栋";
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String str ="name="+ URLEncoder.encode(name_1) +
+                                    "&temperature="+URLEncoder.encode(""+temperature_1)+
+                                    "&patient="+URLEncoder.encode(patient_1)+
+                                    "&date="+URLEncoder.encode(date_1)+
+                                    "&address="+URLEncoder.encode(address_1);
+                            PgSqlUtil.postJsonContent(RECORD_URI+"/save",str);
+                        }
+                    });
+                    thread.start();
+                    try {
+                        thread.join();
+                        Toast.makeText(RecordActivity.this, "填报成功！", Toast.LENGTH_SHORT).show();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
-                Intent intent = new Intent();
-                intent.setAction("ha");
-                RecordActivity.this.sendBroadcast(intent);
+                    btSubmit.setText("今日已填报");
+                    btSubmit.setBackgroundColor(Color.parseColor("#777777"));
+                    btSubmit.setTextColor(Color.parseColor("#F7F7F7"));
+                    btSubmit.setEnabled(false);
+                }
             }
         });
+    }
+    //判断输入是否为double,不是则返回true
+    public static Boolean isNotDouble(String str)
+    {
+        Boolean flag = false;
+        if (str.startsWith(".") || str.endsWith("."))
+        {
+            flag = true;
+        }
+        else
+        {
+            for (int i = 0; i < str.length(); i++)
+            {
+                if (!(Character.isDigit(str.charAt(i)) || str.charAt(i)=='.'))
+                {
+                    flag = true;
+                    break;
+                }
+            }
+
+        }
+        return flag;
     }
 
 

@@ -10,6 +10,7 @@ import RecordUpdate from "../views/RecordUpdate";
 
 import Login from "../views/Login";
 import Home from "../views/Home";
+import VaccineDate from "../views/VaccineDate";
 
 Vue.use(VueRouter)
 
@@ -67,6 +68,25 @@ const routes = [
         name: '添加记录',
         component: AddRecord
       },
+    ]
+  },
+  {
+    path: '/home',
+    name: '预约日期',
+    component: MyMenu,
+    show:true,
+    redirect:'/home',
+    children:[
+      {
+        path: '/vaccineDate',
+        name: '预约日期管理',
+        component: VaccineDate
+      },
+      // {
+      //   path: '/addDate',
+      //   name: '添加预约日期',
+      //   component: AddDate
+      // }
     ]
   },
   {

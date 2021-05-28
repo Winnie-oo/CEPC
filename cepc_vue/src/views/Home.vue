@@ -4,29 +4,29 @@
     <el-row style="height: 70px" :gutter="12">
       <el-col :span="8">
         <el-card shadow="hover">
-          总人数统计:
+          总人数统计:20238
         </el-card>
       </el-col>
       <el-col :span="8">
         <el-card shadow="hover">
-          今日打卡:
+          今日打卡:12322
         </el-card>
       </el-col>
       <el-col :span="8">
         <el-card shadow="hover">
-          疑似患者:
+          疑似患者:35
         </el-card>
       </el-col>
     </el-row>
 
     <div class="home" style="width:60%;height:100%;float:left;">
       <!-- 定义图表外层容器 -->
-        <div id="myHomeChart" ref="homeEcharts"></div>
+        <div id="myLineChart" ref="LineEcharts"></div>
     </div>
 
     <div class="home" style="width:40%;height:100%;float:left;">
       <!-- 定义图表外层容器 -->
-      <div id="myHomePieChart" ref="homePieEcharts"></div>
+      <div id="myPieChart" ref="PieEcharts"></div>
     </div>
 
   </div>
@@ -42,9 +42,7 @@ export default {
     /**
      * 获取当天健康表信息
      */
-    /**
-     *根据用户类型进行用户信息获取(该方法主要用来获取总检测人数==>学生人数)
-     */
+
   },
   mounted() {
     this.dataChart()
@@ -53,8 +51,8 @@ export default {
     // 绘制图表
     dataChart() {
       //初始化图表，this.$refs.homeEcharts获取到图表容器
-      var myChart = this.$echarts.init(this.$refs.homeEcharts);
-      var myPie = this.$echarts.init(this.$refs.homePieEcharts);
+      var myChart = this.$echarts.init(this.$refs.LineEcharts);
+      var myPie = this.$echarts.init(this.$refs.PieEcharts);
       // 初始化配置（官网实例详情左侧代码，直接复制过来按项目需求修改即可）
       var optionLine = {
         title: {
@@ -109,8 +107,8 @@ export default {
 
       var optionPie = {
         title: {
-          text: '某站点用户访问来源',
-          subtext: '纯属虚构',
+          text: '社区感染患者占比',
+          subtext: '疫情防控',
           left: 'center'
         },
         tooltip: {
@@ -126,11 +124,11 @@ export default {
             type: 'pie',
             radius: '50%',
             data: [
-              {value: 1048, name: '搜索引擎'},
-              {value: 735, name: '直接访问'},
-              {value: 580, name: '邮件营销'},
-              {value: 484, name: '联盟广告'},
-              {value: 300, name: '视频广告'}
+              {value: 8, name: '确诊用户'},
+              {value: 35, name: '疑似确诊'},
+              {value: 1048, name: '健康用户'},
+              // {value: 484, name: '联盟广告'},
+              // {value: 300, name: '视频广告'}
             ],
             emphasis: {
               itemStyle: {
@@ -146,6 +144,7 @@ export default {
       myChart.setOption(optionLine)
       myPie.setOption(optionPie)
     }
+    
   }
 }
 </script>
@@ -158,11 +157,11 @@ export default {
   font-size: 30px;
   line-height: 60px;
 }
-#myHomeChart {
-  width: 500px;
+#myLineChart {
+  width: 600px;
   height: 300px;
 }
-#myHomePieChart {
+#myPieChart {
   width: 500px;
   height: 400px;
 }

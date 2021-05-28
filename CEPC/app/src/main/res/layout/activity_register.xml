@@ -5,52 +5,81 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="15dp">
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/purple_700"
-        android:layout_marginTop="30dp"
         android:text="《社区疫情防控》"
         android:gravity="center"
         android:textSize="35sp"/>
     <EditText
-        android:id="@+id/lg_name"
+        android:id="@+id/reg_name"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="3dp"
         android:hint="用户名"
         android:maxLines="1"
         android:paddingLeft="10dp"
         android:drawableLeft="@mipmap/user"
         android:inputType="textNoSuggestions"/>
     <EditText
-        android:id="@+id/lg_pw"
+        android:id="@+id/reg_addr"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="3dp"
+        android:hint="地址"
+        android:maxLines="1"
+        android:paddingLeft="10dp"
+        android:drawableLeft="@mipmap/address"
+        android:inputType="textNoSuggestions"/>
+    <EditText
+        android:id="@+id/reg_tel"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="3dp"
+        android:hint="电话"
+        android:maxLines="1"
+        android:paddingLeft="10dp"
+        android:drawableLeft="@mipmap/tel"
+        android:inputType="textNoSuggestions"/>
+    <EditText
+        android:id="@+id/reg_gender"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="3dp"
+        android:hint="性别"
+        android:maxLines="1"
+        android:paddingLeft="10dp"
+        android:drawableLeft="@mipmap/address"
+        android:inputType="textNoSuggestions"/>
+    <EditText
+        android:id="@+id/reg_pw"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:hint="密码"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="3dp"
         android:maxLines="1"
         android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:drawableLeft="@mipmap/password"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
-            android:id="@+id/lg_login"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="登录"
-            android:layout_marginRight="10dp"
-            android:textSize="20sp"/>
-        <Button
-            android:id="@+id/lg_apply"
+            android:id="@+id/reg_apply"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="注册"
+            android:layout_marginRight="10dp"
+            android:textSize="20sp"/>
+        <Button
+            android:id="@+id/reg_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="返回登录"
             android:textSize="20sp"/>
 
     </LinearLayout>
