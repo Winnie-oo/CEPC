@@ -16,4 +16,6 @@ public class Users {
     private Integer day_mark;
     private String address;
     private String password;
+    private String tel;
+    private String gender;
 }

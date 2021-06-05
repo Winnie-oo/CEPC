@@ -46,40 +46,43 @@
                             android:id="@+id/text0_0"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="健康报送"
                             android:textSize="15sp"
                             android:drawableTop="@mipmap/dailymark"
                             android:textColor="@color/brown"
-                            android:layout_marginRight="13dp"/>
-
+                            android:gravity="center"/>
                         <TextView
                             android:id="@+id/text0_5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="约疫苗"
                             android:textSize="15sp"
                             android:drawableTop="@mipmap/yimiao"
                             android:textColor="@color/brown"
-                            android:layout_marginRight="13dp"
                             android:gravity="center"/>
 
                         <TextView
                             android:id="@+id/text0_2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="填报记录"
                             android:drawableTop="@mipmap/myrecord"
                             android:textSize="15sp"
                             android:textColor="@color/brown"
-                            android:layout_marginRight="13dp"/>
+                            android:gravity="center"/>
                         <TextView
                             android:id="@+id/text0_3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="个人中心"
                             android:drawableTop="@mipmap/mycentral"
                             android:textSize="15sp"
-                            android:textColor="@color/brown"/>
+                            android:textColor="@color/brown"
+                            android:gravity="center"/>
                     </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -95,7 +98,7 @@
                         android:drawableTop="@mipmap/mycode"
                         android:textColor="@color/brown"
                         android:layout_marginTop="10dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="16dp"
                         android:gravity="center"/>
                     <TextView
                         android:id="@+id/text0_1"
@@ -106,8 +109,8 @@
                         android:textSize="15sp"
                         android:textColor="@color/brown"
                         android:layout_marginTop="10dp"
-                        android:layout_marginLeft="10dp"
-                       />
+                        android:layout_marginLeft="17dp"
+                        android:gravity="center"/>
 
                 </LinearLayout>
 

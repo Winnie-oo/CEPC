@@ -17,7 +17,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String IP="192.168.43.74";
-    private static final String URL = "http://"+IP+":8021/users";
+    private static final String USER_URL = "http://"+IP+":8021/users";
     private EditText etUserName,etPassword;
     private Button btLogin,btApply;
 
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            String result = PgSqlUtil.getJsonContent(URL+"/findByName/"+mUserName);
+                            String result = PgSqlUtil.getJsonContent(USER_URL+"/findByName/"+mUserName);
                             try {
                                 JSONObject jsonObject = new JSONObject(result);
                                 if(jsonObject.getString("password").isEmpty())

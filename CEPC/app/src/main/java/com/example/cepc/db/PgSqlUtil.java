@@ -43,8 +43,9 @@ public class PgSqlUtil {
 
 
     public static String postJsonContent(String url_path,String obj) {
+        String result="";
         try {
-            String result="";
+            String date="";
             URL url = new URL(url_path);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
@@ -61,15 +62,16 @@ public class PgSqlUtil {
                 String inputLine = null;
                 while((inputLine=in.readLine())!=null)
                 {
-                    result+=inputLine;
+                    date+=inputLine;
                 }
-                System.out.println("post中result------------"+result);
+                System.out.println("post中date------------"+date);
+                result=date;
             }
             connection.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
+        return result;
     }
 
 

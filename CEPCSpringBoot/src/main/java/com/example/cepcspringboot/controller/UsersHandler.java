@@ -20,10 +20,10 @@ public class UsersHandler {
     }
 
     @PostMapping("/save")
-    public String save(@RequestBody Users users){
+    public String save(Users users){
         users.setDay_mark(0);
-        System.out.println(users);
-        System.out.println(users.toString());
+//        System.out.println(users);
+//        System.out.println(users.toString());
         Users result = usersRepository.save(users);
         if(result!=null){
             return "success";

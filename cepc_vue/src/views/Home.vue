@@ -42,7 +42,6 @@ export default {
     /**
      * 获取当天健康表信息
      */
-
   },
   mounted() {
     this.dataChart()
@@ -143,9 +142,15 @@ export default {
       // 把参数配置放到容器里
       myChart.setOption(optionLine)
       myPie.setOption(optionPie)
-    }
-    
+    },
+    // setEchartsOptions() {   //生成ECharts
+    //   var myLineChart = this.$echarts.init(document.getElementById("myLineChart"));
+    //   myLineChart.setOption(this.options);
+    //   myLineChart.resize(); //重绘,动态获取options时不会出现渲染异常
+    // },
+
   }
+
 }
 </script>
 
