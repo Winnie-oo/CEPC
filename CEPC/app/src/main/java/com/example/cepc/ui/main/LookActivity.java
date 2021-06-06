@@ -20,7 +20,7 @@ import org.json.JSONObject;
 public class LookActivity extends AppCompatActivity {
 
     private static final String IP="192.168.43.74";
-    private static final String USER_URI = "http://"+IP+":8021/users";
+    private final static String RECORD_URI = "http://"+IP+":8021/records";
     private String name_3;
     private int daymark_3;
     private TextView tv3_name, tv3_daymark;
@@ -47,14 +47,10 @@ public class LookActivity extends AppCompatActivity {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                String result = PgSqlUtil.getJsonContent(USER_URI+"/findByName/"+name);
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    System.out.println(jsonObject.getInt("day_mark"));
-                    daymark_3 = jsonObject.getInt("day_mark");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                String result = PgSqlUtil.getJsonContent(RECORD_URI+"/checkContinuation/"+name_3);
+                daymark_3 = Integer.valueOf(result);
+                System.out.println("daymark_3——————————"+daymark_3);
+                tv3_daymark.setText("连续打卡" + daymark_3 + "天");
             }
         });
         thread.start();

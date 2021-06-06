@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#ffffcc" >
+        android:background="#ffffcc"
+        android:padding="5dp">
         <TextView
             android:id="@+id/person_name"
             android:layout_width="wrap_content"
@@ -18,8 +19,9 @@
             android:text="balala"
             android:paddingRight="20dp"
             android:paddingLeft="10dp"
-            android:layout_marginBottom="10dp"
+
             android:textSize="30sp"
+            android:layout_gravity="center"
             android:textColor="#000"/>
         <TextView
             android:id="@+id/person_daymark"
@@ -29,6 +31,7 @@
             android:drawableLeft="@mipmap/chh"
             android:gravity="center"
             android:textSize="15sp"
+            android:layout_gravity="center"
             android:layout_marginRight="10dp"/>
     </LinearLayout>
     <ListView

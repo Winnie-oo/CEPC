@@ -13,7 +13,6 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private Integer day_mark;
     private String address;
     private String password;
     private String tel;

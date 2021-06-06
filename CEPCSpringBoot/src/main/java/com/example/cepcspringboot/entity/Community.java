@@ -15,4 +15,5 @@ public class Community {
     private Integer id;
     private Integer patients;
     private Integer vaccines;
+    private Integer sum;
 }

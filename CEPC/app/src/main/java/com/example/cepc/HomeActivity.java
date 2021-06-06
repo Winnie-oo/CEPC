@@ -68,6 +68,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnTouchListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initView();
+        initBroadcastReceiver ();
         SomeListener();
     }
 
@@ -89,6 +90,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnTouchListe
         mText_4=findViewById(R.id.text0_4);
         mText_5=findViewById(R.id.text0_5);
         mText_6=findViewById(R.id.text0_6);
+        mText_7=findViewById(R.id.text0_7);
         mText_8=findViewById(R.id.text0_8);
 
 //        //让TextView失去焦点
@@ -101,6 +103,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnTouchListe
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     mText_6.setText("剩余名额：" + jsonObject.getString("vaccines"));
+                    mText_7.setText("社区总人数："+jsonObject.getString("sum"));
                     mText_8.setText("确诊人数："+jsonObject.getString("patients"));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -113,7 +116,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnTouchListe
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        initBroadcastReceiver ();
     }
 
 
@@ -223,27 +225,33 @@ public class HomeActivity extends AppCompatActivity implements View.OnTouchListe
                 if (intent.getAction().equals("appoint_cancle")) {
                     initView();
                 }
+                if (intent.getAction().equals("exit")) {
+                    Intent intent1 = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivity(intent1);
+                    HomeActivity.this.finish();
+                }
             }
         };
         IntentFilter filter = new IntentFilter();
         filter.addAction("appoint_cancle");
+        filter.addAction("exit");
         HomeActivity.this.registerReceiver(broadcastReceiver,filter);
     }
 
-    /**
-     * 测量控件的高度
-     * @param view
-     * @return
-     */
-    private float getViewHeight(View view) {
-        int w = View.MeasureSpec.makeMeasureSpec(0,
-                View.MeasureSpec.UNSPECIFIED);
-        int h = View.MeasureSpec.makeMeasureSpec(0,
-                View.MeasureSpec.UNSPECIFIED);
-        view.measure(w, h);
-        Log.i("zyh","Height :  "+view.getMeasuredHeight());
-        return  view.getMeasuredHeight();
-    }
+//    /**
+//     * 测量控件的高度
+//     * @param view
+//     * @return
+//     */
+//    private float getViewHeight(View view) {
+//        int w = View.MeasureSpec.makeMeasureSpec(0,
+//                View.MeasureSpec.UNSPECIFIED);
+//        int h = View.MeasureSpec.makeMeasureSpec(0,
+//                View.MeasureSpec.UNSPECIFIED);
+//        view.measure(w, h);
+//        Log.i("zyh","Height :  "+view.getMeasuredHeight());
+//        return  view.getMeasuredHeight();
+//    }
 
 
     @Override

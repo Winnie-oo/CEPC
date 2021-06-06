@@ -21,9 +21,9 @@ public class UsersHandler {
 
     @PostMapping("/save")
     public String save(Users users){
-        users.setDay_mark(0);
-//        System.out.println(users);
+        System.out.println("--------------"+users);
 //        System.out.println(users.toString());
+
         Users result = usersRepository.save(users);
         if(result!=null){
             return "success";
@@ -43,6 +43,38 @@ public class UsersHandler {
         Users users1 = usersRepository.findById(users.getId()).get();
         users1.setName(users.getName());
         users1.setAddress(users.getAddress());
+        users1.setTel(users.getTel());
+        users1.setGender(users.getGender());
+        users1.setPassword(users.getPassword());
+        Users result = usersRepository.save(users1);
+        if(result!=null){
+            return "success";
+        }else{
+            return "error";
+        }
+    }
+
+    @PostMapping("/upDateUser")
+    public String upDateUser(Users users){
+        System.out.println(users);
+        Users users1 = usersRepository.findById(users.getId()).get();
+        users1.setName(users.getName());
+        users1.setAddress(users.getAddress());
+        users1.setTel(users.getTel());
+        users1.setGender(users.getGender());
+        users1.setPassword(users.getPassword());
+        Users result = usersRepository.save(users1);
+        if(result!=null){
+            return "success";
+        }else{
+            return "error";
+        }
+    }
+
+    @PostMapping("/upDatePw")
+    public String upDatePw(Users users){
+        System.out.println(users);
+        Users users1 = usersRepository.findByNameLike(users.getName());
         users1.setPassword(users.getPassword());
         Users result = usersRepository.save(users1);
         if(result!=null){

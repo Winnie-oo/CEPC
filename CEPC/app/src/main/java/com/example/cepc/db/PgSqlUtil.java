@@ -65,7 +65,7 @@ public class PgSqlUtil {
                     date+=inputLine;
                 }
                 System.out.println("post中date------------"+date);
-                result=date;
+                result = date;
             }
             connection.disconnect();
         } catch (Exception e) {

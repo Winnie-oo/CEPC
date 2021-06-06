@@ -8,7 +8,7 @@
           fixed
           prop="id"
           label="编号"
-          width="150">
+          width="100">
       </el-table-column>
       <el-table-column
           prop="name"
@@ -21,19 +21,23 @@
           width="120">
       </el-table-column>
       <el-table-column
-          prop="day_mark"
-          label="连续打卡"
+          prop="tel"
+          label="电话"
           width="120">
       </el-table-column>
       <el-table-column
+          prop="gender"
+          label="性别"
+          width="60">
+      </el-table-column>
+      <el-table-column
           prop="address"
-          label="地址"
-          width="300">
+          label="地址">
       </el-table-column>
       <el-table-column
           fixed="right"
           label="操作"
-          width="100">
+          width="130">
         <template slot-scope="scope">
           <el-button @click="edit(scope.row)" type="text" size="small">修改</el-button>
           <el-button @click="deleteUser(scope.row)" type="text" size="small">删除</el-button>
@@ -97,7 +101,8 @@ export default {
         id: 1,
         name: '王庆',
         password: '123',
-        day_mark: '7',
+        gender: '女',
+        tel: '17437887655',
         address: '武汉'
       }]
     }

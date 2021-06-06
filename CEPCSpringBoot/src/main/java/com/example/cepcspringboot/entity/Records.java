@@ -16,4 +16,5 @@ public class Records {
     private String date;
     private String address;
     private String patient;
+//    private String hadvac;
 }

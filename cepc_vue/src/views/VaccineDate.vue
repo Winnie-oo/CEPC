@@ -3,12 +3,12 @@
     <el-table
         :data="tableData"
         border
-        style="width: 100%">
+        style="width: 50%">
       <el-table-column
           fixed
           prop="id"
           label="编号"
-          width="150">
+          width="60">
       </el-table-column>
       <el-table-column
           prop="date"
@@ -17,13 +17,12 @@
       </el-table-column>
       <el-table-column
           prop="number"
-          label="剩余数量"
-          width="300">
+          label="剩余数量">
       </el-table-column>
       <el-table-column
           fixed="right"
           label="操作"
-          width="100">
+          width="120">
         <template slot-scope="scope">
           <el-button @click="editDate(scope.row)" type="text" size="small">修改</el-button>
           <el-button @click="deleteDate(scope.row)" type="text" size="small">删除</el-button>

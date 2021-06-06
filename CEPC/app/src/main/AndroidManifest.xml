@@ -23,7 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CEPC"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.main.LookActivity"></activity>
+        <activity android:name=".ui.main.UpdateUserActivity"></activity>
+        <activity android:name=".ui.main.ChangePwActivity" />
+        <activity android:name=".ui.main.LookActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ui.main.VaccinesActivity" />
         <activity android:name=".ui.main.MineActivity" />

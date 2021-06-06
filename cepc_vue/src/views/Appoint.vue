@@ -3,26 +3,16 @@
     <el-table
         :data="tableData"
         border
-        style="width: 100%">
+        style="width: 80%">
       <el-table-column
           fixed
           prop="id"
           label="编号"
-          width="60">
+          width="100">
       </el-table-column>
       <el-table-column
           prop="name"
           label="姓名"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          prop="temperature"
-          label="体温"
-          width="80">
-      </el-table-column>
-      <el-table-column
-          prop="patient"
-          label="何类人员"
           width="120">
       </el-table-column>
       <el-table-column
@@ -31,16 +21,22 @@
           width="120">
       </el-table-column>
       <el-table-column
-          prop="address"
-          label="地址">
+          prop="id_card"
+          label="身份证号码"
+          width="180">
+      </el-table-column>
+      <el-table-column
+          prop="had_appoint"
+          label="是否接种">
       </el-table-column>
       <el-table-column
           fixed="right"
           label="操作"
-          width="130">
+          width="180">
         <template slot-scope="scope">
           <el-button @click="edit(scope.row)" type="text" size="small">修改</el-button>
-          <el-button @click="deleteRecord(scope.row)" type="text" size="small">删除</el-button>
+          <el-button @click="edit(scope.row)" type="text" size="small">接种成功</el-button>
+          <el-button @click="deleteAppoint(scope.row)" type="text" size="small">取消预约</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -57,9 +53,9 @@
 <script>
 export default {
   methods: {
-    deleteRecord(row){
+    deleteAppoint(row){
       const _this = this
-      axios.delete('http://localhost:8021/records/deleteById/'+row.id).then(function (resp) {
+      axios.delete('http://localhost:8021/appointRecord/deleteById/'+row.id).then(function (resp) {
         _this.$alert(row.name+'删除成功', '消息', {
           confirmButtonText: '确定',
           callback: action => {
@@ -70,7 +66,7 @@ export default {
     },
     edit(row) {
       this.$router.push({
-        path:'/recordUpdate',
+        path:'/userUpdate',
         query:{
           id:row.id
         }
@@ -78,7 +74,7 @@ export default {
     },
     page(currentPage){
       const _this = this
-      axios.get('http://localhost:8021/records/findAll/'+currentPage+'/'+_this.totalSize).then(function (resp) {
+      axios.get('http://localhost:8021/appointRecord/findAll/'+currentPage+'/'+_this.totalSize).then(function (resp) {
         console.log(resp)
         _this.tableData = resp.data.content
         _this.totalElement = resp.data.totalElements
@@ -87,7 +83,7 @@ export default {
   },
   created() {
     const _this = this
-    axios.get('http://localhost:8021/records/findAll/1/'+_this.totalSize).then(function (resp){
+    axios.get('http://localhost:8021/appointRecord/findAll/1/'+_this.totalSize).then(function (resp){
       console.log(resp)
       _this.tableData = resp.data.content
       _this.totalElement = resp.data.totalElements
@@ -99,13 +95,16 @@ export default {
       totalSize:7,
       tableData: [{
         id: 1,
-        name: '小明',
-        temperature: 36.2,
-        date: '2021-5-1',
-        address: '武汉',
-        patient: '否'
+        name: '王庆',
+        date: '2021-06-01',
+        id_card: '17437887655',
+        had_appoint: '是'
       }]
     }
   }
 }
 </script>
+
+<style scoped>
+
+</style>

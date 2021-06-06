@@ -4,9 +4,14 @@
     <el-row style="height: 70px" :gutter="12">
       <el-col :span="8">
         <el-card shadow="hover">
-          总人数统计:20238
+          社区总人数:20238
         </el-card>
       </el-col>
+<!--      <el-col :span="8">-->
+<!--        <el-card shadow="hover">-->
+<!--          注册总人数:12123-->
+<!--        </el-card>-->
+<!--      </el-col>-->
       <el-col :span="8">
         <el-card shadow="hover">
           今日打卡:12322

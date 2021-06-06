@@ -2,30 +2,27 @@ package com.example.cepcspringboot.controller;
 
 import com.example.cepcspringboot.entity.Records;
 import com.example.cepcspringboot.repository.RecordsRepository;
+import com.example.cepcspringboot.vo.LineVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/records")
-public class RecordsHandler {
-    private String date_before,date_after;
-    private int continuation =0;
+@RequestMapping("/Line")
+public class LineHandler {
     @Autowired
     private RecordsRepository recordsRepository;
 
-    @GetMapping("/findAll/{page}/{size}")
-    public Page<Records> findAll(@PathVariable("page") Integer page, @PathVariable("size") Integer size){
-        Pageable pageable = PageRequest.of(page-1,size);
-        return recordsRepository.findAll(pageable);
-    }
+    @GetMapping("/findData")
+    public List<Records> lineVOList(){
 
-    @GetMapping("/findByName/{name}")
-    public List<Records> findByName(@PathVariable("name") String name){
+
+
         return recordsRepository.findByNameLike(name);
     }
 

@@ -36,7 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_background"
-                    android:textSize="10sp"
+                    android:textSize="14sp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:maxLines="1"
@@ -74,7 +74,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="是否为四类人员："
+                    android:text="是否为新冠感染患者（四类）："
                     android:layout_marginTop="15dp"
                     android:textSize="18sp"/>
                 <RadioGroup
@@ -84,61 +84,63 @@
                     android:orientation="vertical"
                     android:layout_marginLeft="20dp">
                     <RadioButton
-                        android:id="@+id/radio0"
+                        android:id="@+id/radio1_0"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="否"/>
                     <RadioButton
-                        android:id="@+id/radio1"
+                        android:id="@+id/radio1_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="确诊" />
                     <RadioButton
-                        android:id="@+id/radio2"
+                        android:id="@+id/radio1_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="疑似" />
                     <RadioButton
-                        android:id="@+id/radio3"
+                        android:id="@+id/radio1_3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="发热" />
                     <RadioButton
-                        android:id="@+id/radio4"
+                        android:id="@+id/radio1_4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="密切接触" />
                 </RadioGroup>
-
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="3dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="主要亲属是否确诊感染新冠肺炎"
-                    android:textSize="18sp"/>
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="20dp">
-                    <RadioButton
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="是" />
-                    <RadioButton
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="否" />
-                </RadioGroup>
-            </LinearLayout>
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:layout_marginRight="10dp"-->
+<!--                android:layout_marginTop="3dp">-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="是否接种过新冠疫苗"-->
+<!--                    android:textSize="18sp"/>-->
+<!--                <RadioGroup-->
+<!--                    android:id="@+id/radio_group2"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:layout_marginLeft="20dp">-->
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/radio2_0"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="否" />-->
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/radio2_1"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="是" />-->
+<!--                </RadioGroup>-->
+<!--            </LinearLayout>-->
 
             <Button
                 android:id="@+id/submit1"

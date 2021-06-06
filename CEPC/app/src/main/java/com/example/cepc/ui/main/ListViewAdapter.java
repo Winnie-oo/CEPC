@@ -111,7 +111,7 @@ public class ListViewAdapter extends BaseAdapter {
         holder.tv3_temperature.setText(mTemperature+"℃");
         holder.tv3_patient.setText("是否为四类患者："+mPatient);
         holder.tv3_date.setText("日期："+mDate);
-        holder.tv3_address.setText("地点(经纬度)："+mAddress);
+        holder.tv3_address.setText("地点："+mAddress);
         return convertView;
     }
 }

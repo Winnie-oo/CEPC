@@ -30,8 +30,8 @@ public class AppointHandler {
     @PostMapping("/save")
     public String save(Appoint appoint){
         System.out.println(appoint);
+        appoint.setHad_appoint("否");
         Appoint result = appointRepository.save(appoint);
-
         if(result!=null){
             return "success";
         }else{

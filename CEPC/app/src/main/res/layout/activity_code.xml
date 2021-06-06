@@ -9,13 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="right">
+        android:gravity="center">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="通行码"
             android:textSize="40sp"
-            android:layout_marginRight="50dp"
             android:textColor="@color/brown" />
     </LinearLayout>
     <ImageView
@@ -30,17 +29,20 @@
         android:layout_height="wrap_content"
         android:text="绿码————自由出行"
         android:textSize="15sp"
-        android:textColor="#FF00FF00" />
+        android:textColor="#009900"
+        android:gravity="center"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="黄码————出入受限"
         android:textSize="15sp"
-        android:textColor="#ffcc00"/>
+        android:textColor="#ffcc00"
+        android:gravity="center"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="红码————禁止出入"
         android:textSize="15sp"
-        android:textColor="#FFFF0000"/>
+        android:textColor="#FFFF0000"
+        android:gravity="center"/>
 </LinearLayout>

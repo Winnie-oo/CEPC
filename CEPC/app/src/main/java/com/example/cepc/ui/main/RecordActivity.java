@@ -19,10 +19,6 @@ import com.example.cepc.MyService;
 import com.example.cepc.R;
 import com.example.cepc.db.PgSqlUtil;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,7 +34,7 @@ public class RecordActivity extends AppCompatActivity {
 
     private Button btAddr ;
     private EditText etTemperature;
-    private RadioGroup mRadio;
+    private RadioGroup mRadio1,mRadio2;
     private Button btSubmit;
     private TextView tvDate;
     private String name_1;
@@ -46,6 +42,7 @@ public class RecordActivity extends AppCompatActivity {
     private String patient_1;
     private String date_1;
     private String address_1 ;
+    private String hadVac_1 ;
 
     private boolean record_currect = false;
 
@@ -58,7 +55,8 @@ public class RecordActivity extends AppCompatActivity {
         etTemperature = findViewById(R.id.et1_temperature);
         btSubmit = findViewById(R.id.submit1);
         tvDate = findViewById(R.id.date);
-        mRadio = findViewById(R.id.radio_group1);
+        mRadio1 = findViewById(R.id.radio_group1);
+//        mRadio2 = findViewById(R.id.radio_group2);
         name_1 = this.getIntent().getExtras().getString("username");
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -91,7 +89,7 @@ public class RecordActivity extends AppCompatActivity {
             btSubmit.setEnabled(false);
         }
 
-        mRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        mRadio1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId!=0){
@@ -101,6 +99,16 @@ public class RecordActivity extends AppCompatActivity {
             }
         });
 
+//        mRadio2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                if (checkedId!=0){
+//                    RadioButton rb = findViewById(checkedId);
+//                    hadVac_1 = rb.getText().toString();
+//                }
+//            }
+//        });
+
         btAddr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +116,7 @@ public class RecordActivity extends AppCompatActivity {
                 Intent intent= new Intent(RecordActivity.this, MyService.class);
                 //getActivity().startService(intent); // 开始启动服务
                 //注册广播接收器
-                initBroadcastReceiver();
+                //initBroadcastReceiver();
             }
         });
 
@@ -116,34 +124,40 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(isNotDouble(etTemperature.getText().toString())){
-                    Toast.makeText(RecordActivity.this, "输入不规范！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RecordActivity.this, "体温输入不规范！", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    temperature_1 = Double.parseDouble(etTemperature.getText().toString());
-                    address_1 = "海虹四栋";
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String str ="name="+ URLEncoder.encode(name_1) +
-                                    "&temperature="+URLEncoder.encode(""+temperature_1)+
-                                    "&patient="+URLEncoder.encode(patient_1)+
-                                    "&date="+URLEncoder.encode(date_1)+
-                                    "&address="+URLEncoder.encode(address_1);
-                            PgSqlUtil.postJsonContent(RECORD_URI+"/save",str);
+                    address_1 = "海虹";
+                    String tem_x = etTemperature.getText().toString();
+                    if(patient_1==null || address_1==null || tem_x==null){//  || hadVac_1==null
+                        Toast.makeText(RecordActivity.this, "数据信息不得为空！", Toast.LENGTH_SHORT).show();
+                    }else {
+                        temperature_1 = Double.parseDouble(tem_x);
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String str ="name="+ URLEncoder.encode(name_1) +
+                                        "&temperature="+URLEncoder.encode(""+temperature_1)+
+                                        "&patient="+URLEncoder.encode(patient_1)+
+                                        "&date="+URLEncoder.encode(date_1)+
+//                                        "&hadvac="+URLEncoder.encode(hadVac_1)+
+                                        "&address="+URLEncoder.encode(address_1);
+                                PgSqlUtil.postJsonContent(RECORD_URI+"/save",str);
+                            }
+                        });
+                        thread.start();
+                        try {
+                            thread.join();
+                            Toast.makeText(RecordActivity.this, "填报成功！", Toast.LENGTH_SHORT).show();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                    });
-                    thread.start();
-                    try {
-                        thread.join();
-                        Toast.makeText(RecordActivity.this, "填报成功！", Toast.LENGTH_SHORT).show();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
 
-                    btSubmit.setText("今日已填报");
-                    btSubmit.setBackgroundColor(Color.parseColor("#777777"));
-                    btSubmit.setTextColor(Color.parseColor("#F7F7F7"));
-                    btSubmit.setEnabled(false);
+                        btSubmit.setText("今日已填报");
+                        btSubmit.setBackgroundColor(Color.parseColor("#777777"));
+                        btSubmit.setTextColor(Color.parseColor("#F7F7F7"));
+                        btSubmit.setEnabled(false);
+                    }
                 }
             }
         });
@@ -152,12 +166,9 @@ public class RecordActivity extends AppCompatActivity {
     public static Boolean isNotDouble(String str)
     {
         Boolean flag = false;
-        if (str.startsWith(".") || str.endsWith("."))
-        {
+        if (str.startsWith(".") || str.endsWith(".")) {
             flag = true;
-        }
-        else
-        {
+        } else {
             for (int i = 0; i < str.length(); i++)
             {
                 if (!(Character.isDigit(str.charAt(i)) || str.charAt(i)=='.'))
@@ -166,50 +177,29 @@ public class RecordActivity extends AppCompatActivity {
                     break;
                 }
             }
-
         }
         return flag;
     }
 
+//
+//    //获取广播数据
+//    public void initBroadcastReceiver (){
+//        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//                Bundle bundle = intent.getExtras();
+//                if (intent.getAction() == "com.example.cepc.myservice") {
+//                    Toast.makeText(RecordActivity.this, "传进来了", Toast.LENGTH_SHORT).show();
+//                    Double latitude=bundle.getDouble("latitude");
+//                    Double longitude=bundle.getDouble("longitude");
+//                    btAddr.setText(latitude + ","+longitude);
+//                    address_1 = btAddr.getText().toString();
+//                }
+//            }
+//        };
+//        IntentFilter filter=new IntentFilter();
+//        filter.addAction("com.example.cepc.myservice");
+//        this.registerReceiver(broadcastReceiver,filter);
+//    }
 
-    //获取广播数据
-    public void initBroadcastReceiver (){
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Bundle bundle = intent.getExtras();
-                if (intent.getAction() == "com.example.cepc.myservice") {
-                    Toast.makeText(RecordActivity.this, "传进来了", Toast.LENGTH_SHORT).show();
-                    Double latitude=bundle.getDouble("latitude");
-                    Double longitude=bundle.getDouble("longitude");
-                    btAddr.setText(latitude + ","+longitude);
-                    address_1 = btAddr.getText().toString();
-                }
-            }
-        };
-        IntentFilter filter=new IntentFilter();
-        filter.addAction("com.example.cepc.myservice");
-        this.registerReceiver(broadcastReceiver,filter);
-    }
-
-
-    private int getValue(String s){
-        //获取月和月之间的差值，暂时忽略了润年之分
-        int m=0;
-        switch (s){
-            case "01":m=30;break;
-            case "03":m=30;break;
-            case "05":m=30;break;
-            case "07":m=30;break;
-            case "08":m=30;break;
-            case "10":m=30;break;
-            case "12":m=30;break;
-            case "02":m=27;break;
-            case "04":m=29;break;
-            case "06":m=29;break;
-            case "09":m=29;break;
-            case "11":m=29;break;
-        }
-        return m;
-    }
 }

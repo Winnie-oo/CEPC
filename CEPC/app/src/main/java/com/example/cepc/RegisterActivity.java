@@ -25,7 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText regName,regPw,regAddr,regTel,regGender,regRepw;
     private Button regLogin,regApply;
 
-    private boolean user_currect = false;
+    private boolean user_currect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,25 +76,28 @@ public class RegisterActivity extends AppCompatActivity {
                                         "&address="+URLEncoder.encode(mAddress);
 
                                 String result = PgSqlUtil.postJsonContent(USER_URL+"/save",str);
-                                if(result.equals("success"))
-                                    user_currect =true;
-                                else
-                                    user_currect =false;
+                                System.out.println("注册中------------"+result);
+                                if(result.equals("success")) {
+                                    user_currect = true;
+                                }else
+                                    user_currect = false;
                             }
                         });
                         thread.start();
+                        try {
+                            thread.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
-                        if(user_currect) {
+                        if(user_currect)
                             Toast.makeText(RegisterActivity.this, "用户申请成功！", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        else if(!user_currect)
                             Toast.makeText(RegisterActivity.this, "用户名已存在！", Toast.LENGTH_SHORT).show();
-                        }
+
                     } else {
                         Toast.makeText(RegisterActivity.this, "密码输入不一致！", Toast.LENGTH_SHORT).show();
                     }
-
-
                 }
             }
         });

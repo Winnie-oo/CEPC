@@ -15,4 +15,5 @@ public class Appoint {
     private String name;
     private String date;
     private String id_card;
+    private String had_appoint;
 }

@@ -3,14 +3,20 @@
     <el-form-item label="姓名" prop="name">
       <el-input v-model.number="ruleForm.name"></el-input>
     </el-form-item>
+    <el-form-item label="性别" prop="gender">
+      <el-input v-model.number="ruleForm.gender"></el-input>
+    </el-form-item>
+    <el-form-item label="电话" prop="tel">
+      <el-input v-model.number="ruleForm.tel"></el-input>
+    </el-form-item>
+    <el-form-item label="地址" prop="address">
+      <el-input v-model.number="ruleForm.address"></el-input>
+    </el-form-item>
     <el-form-item label="密码" prop="password">
       <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
     </el-form-item>
     <el-form-item label="确认密码" prop="checkPass">
       <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
-    </el-form-item>
-    <el-form-item label="地址" prop="address">
-      <el-input v-model.number="ruleForm.address"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -20,6 +26,8 @@
 </template>
 
 <script>
+import qs from "qs";
+
 export default {
   data() {
     var checkName = (rule, value, callback) => {
@@ -39,6 +47,20 @@ export default {
       //     }
       //   }
       // }, 1000);
+    };
+    var checkTel = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('电话不能为空'));
+      }else {
+        callback();
+      }
+    };
+    var checkGender = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('性别不能为空'));
+      }else {
+        callback();
+      }
     };
     var validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -71,11 +93,19 @@ export default {
         name:'',
         password: '',
         checkPass: '',
+        gender: '',
+        tel: '',
         address: ''
       },
       rules: {
         name: [
           { validator: checkName, trigger: 'blur' }
+        ],
+        tel: [
+          { validator: checkTel, trigger: 'blur' }
+        ],
+        gender: [
+          { validator: checkGender, trigger: 'blur' }
         ],
         password: [
           { validator: validatePass, trigger: 'blur' }
@@ -95,8 +125,15 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log('submit!');
-          axios.post('http://localhost:8021/users/save',this.ruleForm).then(function (resp){
-            console.log(this.ruleForm);
+          axios({
+            url:'http://localhost:8021/users/save',
+            method: 'post',
+            data: qs.stringify(this.ruleForm),
+            headers:{
+              'Content-Type':'application/x-www-form-urlencoded'
+            }
+          }).then(function (resp){
+            console.log(resp.data);
             if(resp.data == 'success'){
               _this.$alert('添加成功', '消息', {
                 confirmButtonText: '确定',

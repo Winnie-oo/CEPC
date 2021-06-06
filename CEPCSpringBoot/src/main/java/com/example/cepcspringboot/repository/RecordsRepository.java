@@ -1,6 +1,7 @@
 package com.example.cepcspringboot.repository;
 
 import com.example.cepcspringboot.entity.Records;
+import com.example.cepcspringboot.vo.LineVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

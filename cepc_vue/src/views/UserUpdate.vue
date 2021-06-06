@@ -3,6 +3,12 @@
     <el-form-item label="姓名" prop="name">
       <el-input v-model.number="ruleForm.name"></el-input>
     </el-form-item>
+    <el-form-item label="性别" prop="gender">
+      <el-input v-model.number="ruleForm.gender"></el-input>
+    </el-form-item>
+    <el-form-item label="电话" prop="tel">
+      <el-input v-model.number="ruleForm.tel"></el-input>
+    </el-form-item>
     <el-form-item label="密码" prop="password">
       <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
     </el-form-item>
@@ -25,6 +31,20 @@ export default {
     var checkName = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('姓名不能为空'));
+      }else {
+        callback();
+      }
+    };
+    var checkTel = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('电话不能为空'));
+      }else {
+        callback();
+      }
+    };
+    var checkGender = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('性别不能为空'));
       }else {
         callback();
       }
@@ -59,6 +79,8 @@ export default {
       ruleForm: {
         id: 0,
         name:'默认',
+        tel: '',
+        gender: '',
         password: '',
         checkPass: '',
         address: '默认'
@@ -66,6 +88,12 @@ export default {
       rules: {
         name: [
           { validator: checkName, trigger: 'blur' }
+        ],
+        tel: [
+          { validator: checkTel, trigger: 'blur' }
+        ],
+        gender: [
+          { validator: checkGender, trigger: 'blur' }
         ],
         password: [
           { validator: validatePass, trigger: 'blur' }
@@ -114,6 +142,8 @@ export default {
       _this.ruleForm.password = resp.data.password
       _this.ruleForm.name = resp.data.name
       _this.ruleForm.address = resp.data.address
+      _this.ruleForm.gender = resp.data.gender
+      _this.ruleForm.tel = resp.data.tel
     })
   }
 }
