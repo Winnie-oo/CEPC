@@ -20,6 +20,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
+
 public class CodeActivity extends AppCompatActivity {
 
     private static final String IP = "192.168.43.74";
@@ -36,21 +38,24 @@ public class CodeActivity extends AppCompatActivity {
 
         imQR_code = findViewById(R.id.qr_code);
         name_2 = this.getIntent().getExtras().getString("username");
-        createQRcode("It is " + name_2 + "'s QR code");
+        createQRcode();
 
         imQR_code.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createQRcode("It is "+name_2+"'s QR code");
+                createQRcode();
             }
         });
     }
-    public void createQRcode(String string){
+    public void createQRcode(){
         try {
+            int n = judgeRank(name_2);
+            String string ="name="+ URLEncoder.encode(name_2) +
+                    "&rank="+URLEncoder.encode(""+n);
             BitMatrix bitMatrix = new QRCodeWriter().encode(string, BarcodeFormat.QR_CODE, 250, 250);
             int fixbit[]=new int[bitMatrix.getWidth()*bitMatrix.getHeight()];
             int color = Color.BLACK;
-                switch (judgeRank(name_2)){
+                switch (n){
                 case -1:
                     break;
                 case 0:

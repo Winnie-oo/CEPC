@@ -2,20 +2,12 @@ package com.example.cepc.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.cepc.LoginActivity;
-import com.example.cepc.MyService;
 import com.example.cepc.R;
 import com.example.cepc.db.PgSqlUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class LookActivity extends AppCompatActivity {
 

@@ -1,10 +1,6 @@
 package com.example.cepc.ui.main;
 
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +11,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.cepc.MyService;
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.example.cepc.R;
 import com.example.cepc.db.PgSqlUtil;
 
@@ -46,10 +46,19 @@ public class RecordActivity extends AppCompatActivity {
 
     private boolean record_currect = false;
 
+    public LocationClient mLocationClient = null;
+    public MyLocationListener myListener = new MyLocationListener();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+
+        mLocationClient = new LocationClient(getApplicationContext());
+        mLocationClient.registerLocationListener(myListener);
+        setLocationOption();
+
+
 
         btAddr = findViewById(R.id.bt1_address);
         etTemperature = findViewById(R.id.et1_temperature);
@@ -83,6 +92,7 @@ public class RecordActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if( record_currect) {
+            setContentView(R.layout.over);
             btSubmit.setText("今日已填报");
             btSubmit.setBackgroundColor(Color.parseColor("#777777"));
             btSubmit.setTextColor(Color.parseColor("#F7F7F7"));
@@ -113,10 +123,8 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //获取地理位置
-                Intent intent= new Intent(RecordActivity.this, MyService.class);
-                //getActivity().startService(intent); // 开始启动服务
-                //注册广播接收器
-                //initBroadcastReceiver();
+                mLocationClient.start();
+
             }
         });
 
@@ -127,7 +135,8 @@ public class RecordActivity extends AppCompatActivity {
                     Toast.makeText(RecordActivity.this, "体温输入不规范！", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    address_1 = "海虹";
+                    address_1 = btAddr.getText().toString();
+                    System.out.println(address_1);
                     String tem_x = etTemperature.getText().toString();
                     if(patient_1==null || address_1==null || tem_x==null){//  || hadVac_1==null
                         Toast.makeText(RecordActivity.this, "数据信息不得为空！", Toast.LENGTH_SHORT).show();
@@ -162,6 +171,42 @@ public class RecordActivity extends AppCompatActivity {
             }
         });
     }
+
+    public class MyLocationListener implements BDLocationListener {
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            String addr = location.getAddrStr();    //获取详细地址信息
+            String country = location.getCountry();    //获取国家
+            String province = location.getProvince();    //获取省份
+            String city = location.getCity();    //获取城市
+            String district = location.getDistrict();    //获取区县
+            String street = location.getStreet();    //获取街道信息
+            String adcode = location.getAdCode();    //获取adcode
+            String town = location.getTown();    //获取乡镇信息
+
+            System.out.println(province+city+district+street);
+            btAddr.setText(province+city+district+street);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        mLocationClient.stop();
+        super.onDestroy();
+    }
+
+    //设置相关参数
+    private void setLocationOption() {
+        LocationClientOption option = new LocationClientOption();
+        option.setIsNeedAddress(true);
+//可选，是否需要地址信息，默认为不需要，即参数为false
+//如果开发者需要获得当前点的地址信息，此处必须为true
+        option.setNeedNewVersionRgc(true);
+//可选，设置是否需要最新版本的地址信息。默认需要，即参数为true
+        mLocationClient.setLocOption(option);
+//mLocationClient为第二步初始化过的LocationClient对象
+    }
+
     //判断输入是否为double,不是则返回true
     public static Boolean isNotDouble(String str)
     {
@@ -180,6 +225,8 @@ public class RecordActivity extends AppCompatActivity {
         }
         return flag;
     }
+
+
 
 //
 //    //获取广播数据

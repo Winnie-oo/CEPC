@@ -3,12 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_1_over">
+    android:id="@+id/over"
+    android:background="#FFFFF7">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="您已完成今日填报！"
-        android:textSize="40sp"
+        android:text="您已完成今日填报!"
+        android:textSize="30sp"
         android:gravity="center"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

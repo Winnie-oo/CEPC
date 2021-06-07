@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/records")
 public class RecordsHandler {
     private String date_before,date_after;
-    private int continuation =0;
+
     @Autowired
     private RecordsRepository recordsRepository;
 
@@ -79,7 +79,8 @@ public class RecordsHandler {
     @GetMapping("/checkContinuation/{name}")
     public Integer checkContinuation(@PathVariable("name") String name) {
         List<Records> list = recordsRepository.findTop14ByNameLikeOrderByIdDesc(name);
-        if (list.size()>0 && continuation==0) continuation=1;
+        int continuation = 0;
+        if (list.size()>0) continuation=1;
         for (Records records : list) {
             date_after = records.getDate();
             if(date_before!=null){
@@ -118,6 +119,7 @@ public class RecordsHandler {
             date_before = records.getDate();
         }
         System.out.println("continuation----------------"+continuation);
+        date_before = null;
         return continuation;
     }
 
