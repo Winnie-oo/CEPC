@@ -24,7 +24,7 @@
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('ruleForm')">修改</el-button>
-      <el-button @click="cancle('ruleForm')">取消</el-button>
+      <el-button @click="exitForm('ruleForm')">取消</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -92,8 +92,10 @@ export default {
         }
       });
     },
-    cancle(formName) {
+    exitForm(formName) {
+      const _this = this
       _this.$router.push('/records')
+
     }
   },
   created(){

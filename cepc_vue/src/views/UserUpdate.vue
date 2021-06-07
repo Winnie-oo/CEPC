@@ -20,12 +20,14 @@
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('ruleForm')">修改</el-button>
-      <el-button @click="resetForm('ruleForm')">取消</el-button>
+      <el-button @click="exitForm('ruleForm')">取消</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
+import qs from "qs";
+
 export default {
   data() {
     var checkName = (rule, value, callback) => {
@@ -114,7 +116,14 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log('submit!');
-          axios.put('http://localhost:8021/users/upDate',this.ruleForm).then(function (resp){
+          axios({
+            url:'http://localhost:8021/users/upDateUser',
+            method: 'post',
+            data: qs.stringify(this.ruleForm),
+            headers:{
+              'Content-Type':'application/x-www-form-urlencoded'
+            }
+          }).then(function (resp){
             if(resp.data == 'success'){
               _this.$alert('修改成功', '消息', {
                 confirmButtonText: '确定',
@@ -130,7 +139,7 @@ export default {
         }
       });
     },
-    resetForm(formName) {
+    exitForm(formName) {
       const _this = this
       _this.$router.push('/users')
     }

@@ -25,6 +25,7 @@
     <el-form-item>
       <el-button type="primary" @click="submitForm('ruleForm')">立即添加</el-button>
       <el-button @click="resetForm('ruleForm')">重置</el-button>
+      <el-button @click="backForm('ruleForm')">返回</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -93,6 +94,9 @@ export default {
           return false;
         }
       });
+    },
+    backForm(){
+      this.$router.push('/users')
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();

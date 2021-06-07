@@ -37,23 +37,6 @@ public class UsersHandler {
         return usersRepository.findById(id).get();
     }
 
-    @PutMapping("/upDate")
-    public String upDate(@RequestBody Users users){
-        System.out.println(users);
-        Users users1 = usersRepository.findById(users.getId()).get();
-        users1.setName(users.getName());
-        users1.setAddress(users.getAddress());
-        users1.setTel(users.getTel());
-        users1.setGender(users.getGender());
-        users1.setPassword(users.getPassword());
-        Users result = usersRepository.save(users1);
-        if(result!=null){
-            return "success";
-        }else{
-            return "error";
-        }
-    }
-
     @PostMapping("/upDateUser")
     public String upDateUser(Users users){
         System.out.println(users);

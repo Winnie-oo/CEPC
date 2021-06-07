@@ -12,6 +12,10 @@ import Login from "../views/Login";
 import Home from "../views/Home";
 import VaccineDate from "../views/VaccineDate";
 import Appoint from "../views/Appoint";
+import DateUpdate from "../views/DateUpdate";
+import AppointUpdate from "../views/AppointUpdate";
+import AddAppoint from "../views/AddAppoint";
+import AddDate from "../views/AddDate";
 
 Vue.use(VueRouter)
 
@@ -88,12 +92,7 @@ const routes = [
         path: '/appoint',
         name: '预约记录管理',
         component: Appoint
-      },
-      // {
-      //   path: '/addDate',
-      //   name: '添加预约日期',
-      //   component: AddDate
-      // }
+      }
     ]
   },
   {
@@ -120,6 +119,54 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/',
+    name: "修改预约日期",
+    component: MyMenu,
+    show:false,
+    children: [
+      {
+        path: '/dateUpdate',
+        component: DateUpdate
+      }
+    ]
+  },
+  {
+    path: '/',
+    name: "修改预约记录",
+    component: MyMenu,
+    show:false,
+    children: [
+      {
+        path: '/appointUpdate',
+        component: AppointUpdate
+      }
+    ]
+  },
+  {
+    path: '/',
+    name: "添加预约记录",
+    component: MyMenu,
+    show:false,
+    children: [
+      {
+        path: '/addAppoint',
+        component: AddAppoint
+      }
+    ]
+  },
+  {
+    path: '/',
+    name: "添加预约日期",
+    component: MyMenu,
+    show:false,
+    children: [
+      {
+        path: '/addDate',
+        component: AddDate
+      }
+    ]
+  }
 
 ]
 

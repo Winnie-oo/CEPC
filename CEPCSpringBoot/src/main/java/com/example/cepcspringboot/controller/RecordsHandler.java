@@ -122,9 +122,7 @@ public class RecordsHandler {
     }
 
     @DeleteMapping("/deleteById/{id}")
-    public void delete(@PathVariable("id") Integer id){
-        recordsRepository.deleteById(id);
-    }
+    public void delete(@PathVariable("id") Integer id){ recordsRepository.deleteById(id); }
 
     private int getValue(int year,int month){
         int m=0;

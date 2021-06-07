@@ -19,11 +19,11 @@ public class LineHandler {
     private RecordsRepository recordsRepository;
 
     @GetMapping("/findData")
-    public List<Records> lineVOList(){
+    public void lineVOList(){
 
 
 
-        return recordsRepository.findByNameLike(name);
+       // return recordsRepository.findByNameLike(name);
     }
 
     @GetMapping("/findById/{id}")
@@ -46,77 +46,77 @@ public class LineHandler {
         return recordsRepository.findByNameAndDateLike(name,date);
     }
 
-    @GetMapping("/judgeRank/{name}")
-    public Integer judgeRank(@PathVariable("name") String name) {
-        List<Records> list = recordsRepository.findTop14ByNameLikeOrderByIdDesc(name);
-        int rank = -1;//等级0不安全，1限制，2安全
-        int count = checkContinuation(name);//查找连续填报是否超过七日
-        if(list.size()>0){
-            rank+=1;
-            if (count >6){
-                rank+=1;
-            }
-            count = 0;//查找发烧记录以及确诊记录
-            for (Records records : list) {
-                double d = records.getTemperature();
-                if (d > 37.3) {
-                    count++;
-                }
-                if (!(records.getPatient().equals("否"))) {
-                    count++;
-                }
-            }
-            if(count==0){
-                rank+=1;
-            }else rank = 0;//有发烧确证记录，直接判为红色
-        }
-        return rank;
-    }
+//    @GetMapping("/judgeRank/{name}")
+//    public Integer judgeRank(@PathVariable("name") String name) {
+//        List<Records> list = recordsRepository.findTop14ByNameLikeOrderByIdDesc(name);
+//        int rank = -1;//等级0不安全，1限制，2安全
+//        int count = checkContinuation(name);//查找连续填报是否超过七日
+//        if(list.size()>0){
+//            rank+=1;
+//            if (count >6){
+//                rank+=1;
+//            }
+//            count = 0;//查找发烧记录以及确诊记录
+//            for (Records records : list) {
+//                double d = records.getTemperature();
+//                if (d > 37.3) {
+//                    count++;
+//                }
+//                if (!(records.getPatient().equals("否"))) {
+//                    count++;
+//                }
+//            }
+//            if(count==0){
+//                rank+=1;
+//            }else rank = 0;//有发烧确证记录，直接判为红色
+//        }
+//        return rank;
+//    }
 
-    @GetMapping("/checkContinuation/{name}")
-    public Integer checkContinuation(@PathVariable("name") String name) {
-        List<Records> list = recordsRepository.findTop14ByNameLikeOrderByIdDesc(name);
-        if (list.size()>0 && continuation==0) continuation=1;
-        for (Records records : list) {
-            date_after = records.getDate();
-            if(date_before!=null){
-                int dd_after = Integer.parseInt(date_after.substring(8));
-                int mm_after = Integer.parseInt(date_after.substring(5,7));
-                int yy_after = Integer.parseInt(date_after.substring(0,4));
-
-                int dd_before = Integer.parseInt(date_before.substring(8));
-                int mm_before = Integer.parseInt(date_before.substring(5,7));
-                int yy_before = Integer.parseInt(date_before.substring(0,4));
-
-                if(yy_after==yy_before){
-                    if(mm_after==mm_before){
-                        if(dd_after==dd_before-1){
-                            continuation++;
-                        }
-                        else break;
-                    }
-                    else if(mm_after==mm_before-1){
-                        if(dd_after == getValue(yy_after,mm_after) || dd_before == 1 ){
-                            continuation++;
-                        }
-                        else break;
-                    }
-                    else break;
-                }else if(yy_after==yy_before-1) {
-                    if (mm_after == 12 || mm_before == 1) {
-                        if (dd_after == getValue(yy_after,mm_after) || dd_before == 1) {
-                            continuation++;
-                        }
-                        else break;
-                    }
-                    else break;
-                }
-            }
-            date_before = records.getDate();
-        }
-        System.out.println("continuation----------------"+continuation);
-        return continuation;
-    }
+//    @GetMapping("/checkContinuation/{name}")
+//    public Integer checkContinuation(@PathVariable("name") String name) {
+//        List<Records> list = recordsRepository.findTop14ByNameLikeOrderByIdDesc(name);
+//        if (list.size()>0 && continuation==0) continuation=1;
+//        for (Records records : list) {
+//            date_after = records.getDate();
+//            if(date_before!=null){
+//                int dd_after = Integer.parseInt(date_after.substring(8));
+//                int mm_after = Integer.parseInt(date_after.substring(5,7));
+//                int yy_after = Integer.parseInt(date_after.substring(0,4));
+//
+//                int dd_before = Integer.parseInt(date_before.substring(8));
+//                int mm_before = Integer.parseInt(date_before.substring(5,7));
+//                int yy_before = Integer.parseInt(date_before.substring(0,4));
+//
+//                if(yy_after==yy_before){
+//                    if(mm_after==mm_before){
+//                        if(dd_after==dd_before-1){
+//                            continuation++;
+//                        }
+//                        else break;
+//                    }
+//                    else if(mm_after==mm_before-1){
+//                        if(dd_after == getValue(yy_after,mm_after) || dd_before == 1 ){
+//                            continuation++;
+//                        }
+//                        else break;
+//                    }
+//                    else break;
+//                }else if(yy_after==yy_before-1) {
+//                    if (mm_after == 12 || mm_before == 1) {
+//                        if (dd_after == getValue(yy_after,mm_after) || dd_before == 1) {
+//                            continuation++;
+//                        }
+//                        else break;
+//                    }
+//                    else break;
+//                }
+//            }
+//            date_before = records.getDate();
+//        }
+//        System.out.println("continuation----------------"+continuation);
+//        return continuation;
+//    }
 
     @DeleteMapping("/deleteById/{id}")
     public void delete(@PathVariable("id") Integer id){
